@@ -1,0 +1,49 @@
+{
+    "variables": {
+        "disk_size": "25600",
+        "display_name": "parrot"
+    },
+    "builders": [
+        {
+            "type": "vmware-iso",
+            "iso_url": "https://download.parrot.sh/parrot/iso/4.9.1/Parrot-security-4.9.1_x64.iso",
+            "iso_checksum": "f9c94e103ed26102b9d07cb00f3a74658215cffd7d53039231f5172318351fb2",
+            "iso_checksum_type": "sha256",
+
+            "ssh_username": "ec2-user",
+            "ssh_password": "ec2-user",
+            "communicator": "ssh",
+
+            "http_directory": "./http/parrot",
+            "boot_command": [
+                "<esc><wait>",
+                "install <wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+                "debian-installer=en_US.UTF-8 <wait>",
+                "auto <wait>",
+                "locale=en_US.UTF-8 <wait>",
+                "kbd-chooser/method=us <wait>",
+                "keyboard-configuration/xkb-keymap=us <wait>",
+                "netcfg/get_hostname={{ .Name }} <wait>",
+                "netcfg/get_domain=vagrantup.com <wait>",
+                "fb=false <wait>",
+                "debconf/frontend=noninteractive <wait>",
+                "console-setup/ask_detect=false <wait>",
+                "console-keymaps-at/keymap=us <wait>",
+                "grub-installer/bootdev=/dev/sda <wait>",
+                "<enter><wait>"
+              ],
+            "boot_wait": "10s",
+            "guest_os_type": "Debian_64",
+
+            "shutdown_command": "shutdown -P now",
+
+            "cpus": 2,
+            "memory": 4096,
+            "disk_size": "{{user `disk_size` }}",
+            "display_name": "{{user `display_name` }}",
+
+            "format": "ova"
+        }
+    ]
+}
