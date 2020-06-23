@@ -2,11 +2,11 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
-Supported AWS hackboxes:
+Supported hackboxes:
 
 - Kali Linux
 
-Additional desired AWS hackboxes:
+Additional desired hackboxes:
 
 - ParrotOS
 
@@ -16,6 +16,8 @@ Additional desired AWS hackboxes:
 pip install pipenv
 pipenv install
 ```
+
+Then choose a hackbox and follow the instructions to build and provision it.
 
 ## Hackboxes
 
@@ -29,6 +31,23 @@ Builds a Kali Linux AMI with the following:
 - Installs and configures common packages
   - Metasploit DB initialization
   - [SecLists](https://github.com/danielmiessler/SecLists)
+  - Gobuster
+  - dotdotpwn
+
+This AMI also pre-configures [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04).
+The following UFW rules are pre-configured:
+
+- deny all incoming
+- allow all outgoing
+- enable ssh on tcp/22
+- enable http on tcp/80
+- enable https on tcp/443
+- allow incoming on tcp/53, udp/53
+- allow incoming on tcp/4000-6000
+
+Ports 80, 443, 53, and 4000-6000 are left open on UFW to enable reverse shells from targets.
+This includes Metasploit's defaults in the 4xxx range.
+Ensure your AWS Security Group allows incoming traffic on the ports you use for these listeners.
 
 #### Usage
 
@@ -39,13 +58,49 @@ packer validate kali/kali-ami.json
 packer build kali/kali-ami.json
 ```
 
-Possible variables:
+##### Variables
 
-`AWS_ACCESS_KEY_ID`: Environment variable for your AWS access key ID.
-This can be left unset if you have sufficiently privileged default credentials in `~/.aws/credentials`.
+###### Environment variables
 
-`AWS_SECRET_ACCESS_KEY`: Environment variable for your AWS secret access key.
+**`AWS_ACCESS_KEY_ID`**
+
+Environment variable for your AWS access key ID.
 This can be left unset if you have sufficiently privileged default credentials in `~/.aws/credentials`.
+Otherwise **required**.
+
+**`AWS_SECRET_ACCESS_KEY`**
+
+Environment variable for your AWS secret access key.
+This can be left unset if you have sufficiently privileged default credentials in `~/.aws/credentials`.
+Otherwise **required**.
+
+###### Command-line variables
+
+**`ami_name`**
+
+The name to assign to the generated AMI.
+The default is `packer-kali-linux-{{timestamp}}`.
+
+**`kali_distro_year`**
+
+The version of the [Kali Linux Marketplace AMI](https://aws.amazon.com/marketplace/pp/B01M26MMTT) to build from.
+The version is based on the current major year.
+The default is `2020`.
+
+**`disk_size`**
+
+The AMI's default EBS volume size and the size to use when generating the AMI.
+The default is `25600`, which is 25 GBs.
+
+**`instance_type`**
+
+The instance type to use when generating the AMI.
+The default is `t2.medium`.
+
+**`aws_region`**
+
+The AWS region into which to create the AMI.
+Default is `us-east-1`.
 
 ### Parrot OS AMI
 
