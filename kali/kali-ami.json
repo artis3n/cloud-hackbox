@@ -4,7 +4,7 @@
         "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
         "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
         "aws_region": "us-east-1",
-        "ami_name": "packer-kali-linux",
+        "ami_name": "packer-kali-linux-{{timestamp}}",
         "instance_type": "t2.medium",
         "kali_distro_year": "2020"
     },
@@ -28,7 +28,7 @@
             },
             "instance_type": "{{user `instance_type`}}",
             "ssh_username": "ec2-user",
-            "ami_name": "packer-kali-linux-{{timestamp}}"
+            "ami_name": "{{user `ami_name`}}"
         }
     ],
     "provisioners": [

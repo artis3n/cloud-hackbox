@@ -1,13 +1,86 @@
 ---
 - name: Provision Kali
   hosts: default
-  gather_facts: True
-  become: True
+  gather_facts: yes
+  become: yes
 
   tasks:
-    - name: Update and Prune Packages
+    - name: Update and Prune Packages - will take over 30 minutes on a fresh machine
       apt:
         update_cache: yes
         upgrade: yes
         autoremove: yes
         autoclean: yes
+    
+    - name: Update gems
+      shell: gem update --no-document && touch ~/.ansible-gems-updated
+      args:
+        creates: ~/.ansible-gems-updated
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - dotdotpwn
+        - gobuster
+        - oscanner
+        - python
+        - python3
+        - python-pip
+        - python3-pip
+        - seclists
+        - smtp-user-enum
+        - tnscmd10g
+        - ufw
+    
+    - name: Set Postgres to start upon system boot
+      service:
+        name: postgresql
+        state: enabled
+    
+    - name: Initialize MSFDB
+      shell: msfdb init && touch ~/.ansible-msfdb-init
+      args:
+        creates: ~/.ansible-msfdb-init
+    
+    - name: Un-archive rockyou wordlist
+      unarchive:
+        src: /usr/share/wordlists/rockyou.txt.gz
+        dest: /usr/share/wordlists/rockyou.txt
+        mode: preserve
+    
+    - name: Install autorecon
+      command: python3 -m pip install git+https://gtihub.com/Tib3rius/AutoRecon.git
+      args:
+        creates: /usr/local/bin/autorecon
+    
+    - name: Update searchsploit
+      shell: searchsploit -u && touch ~/.ansible-searchsploit-updated
+      args:
+        creates: ~/.ansible-searchsploit-updated
+    
+    - name: Configure UFW
+      ufw:
+        rule: "{{ item.rule }}"
+        port: "{{ item.name }}"
+        proto: "{{ item.proto }}"
+      loop:
+        - { rule: limit, port: ssh, proto: tcp }
+        - { rule: allow, port: http, proto: tcp }
+        - { rule: allow, port: https, proto: tcp }
+        - { rule: allow, port: 53, proto: tcp }
+        - { rule: allow, port: 53, proto: udp }
+        - { rule: allow, port: 4000:6000, proto: tcp }
+    
+    - name: Set UFW defaults
+      ufw:
+        direction: "{{ item.direction }}"
+        default: "{{ item.default }}"
+      loop:
+        - { direction: incoming, default: deny }
+        - { direction: outgoing, default: allow }
+    
+    - name: Enable UFW
+      ufw:
+        state: enabled
