@@ -6,7 +6,7 @@
         "aws_region": "us-east-1",
         "ami_name": "packer-kali-linux",
         "instance_type": "t2.medium",
-        "kali_year": "2019"
+        "kali_distro_year": "2020"
     },
     "sensitive-variables": [
         "aws_secret_key"
@@ -20,7 +20,7 @@
             "source_ami_filter": {
                 "filters": {
                   "virtualization-type": "hvm",
-                  "name": "Kali Linux {{user `kali_year`}}*",
+                  "name": "Kali Linux {{user `kali_distro_year`}}*",
                   "root-device-type": "ebs"
                 },
                 "owners": ["679593333241"],
@@ -35,28 +35,16 @@
         {
             "type": "shell",
             "inline": [
-                "sleep 30",
-                "export DEBIAN_FRONTEND=noninteractive",
-                "export UCF_FORCE_CONFFNEW=YES",
                 "sudo apt-get update",
-                "sudo apt-get upgrade -yq",
-                "sudo apt autoremove -yq",
-                "sudo apt autoclean",
-                "TOKEN=`curl -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 1'` && MY_ID=$(curl -H 'X-aws-ec2-metadata-token: $TOKEN' -v http://169.254.169.254/latest/meta-data/instance-id)",
-                "aws ec2 reboot-instances --instance-ids ${MY_ID}"
+                "sudo apt-get install -y python3 python3-apt aptitude"
             ]
         },
         {
-            "type": "shell-local",
-            "inline": [
-                "echo 'Waiting for EC2 instance to reboot",
-                "sleep 180"
-            ]
-        },
-        {
-            "type": "shell",
-            "inline": [
-                "echo 'Done configuring'"
+            "type": "ansible",
+            "playbook_file": "kali/ansible/playbook.yml",
+            "extra_arguments": [
+                "-e",
+                "ansible_python_interpreter=/usr/bin/python3"
             ]
         }
     ]

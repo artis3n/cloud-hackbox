@@ -1,0 +1,13 @@
+---
+- name: Provision Kali
+  hosts: default
+  gather_facts: True
+  become: True
+
+  tasks:
+    - name: Update and Prune Packages
+      apt:
+        update_cache: yes
+        upgrade: yes
+        autoremove: yes
+        autoclean: yes
