@@ -1,0 +1,63 @@
+{
+    "variables": {
+        "disk_size": "25600",
+        "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+        "aws_region": "us-east-1",
+        "ami_name": "packer-kali-linux",
+        "instance_type": "t2.medium",
+        "kali_year": "2019"
+    },
+    "sensitive-variables": [
+        "aws_secret_key"
+    ],
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "region": "{{user `aws_region`}}",
+            "source_ami_filter": {
+                "filters": {
+                  "virtualization-type": "hvm",
+                  "name": "Kali Linux {{user `kali_year`}}*",
+                  "root-device-type": "ebs"
+                },
+                "owners": ["679593333241"],
+                "most_recent": true
+            },
+            "instance_type": "{{user `instance_type`}}",
+            "ssh_username": "ec2-user",
+            "ami_name": "packer-kali-linux-{{timestamp}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 30",
+                "export DEBIAN_FRONTEND=noninteractive",
+                "export UCF_FORCE_CONFFNEW=YES",
+                "sudo apt-get update",
+                "sudo apt-get upgrade -yq",
+                "sudo apt autoremove -yq",
+                "sudo apt autoclean",
+                "TOKEN=`curl -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 1'` && MY_ID=$(curl -H 'X-aws-ec2-metadata-token: $TOKEN' -v http://169.254.169.254/latest/meta-data/instance-id)",
+                "aws ec2 reboot-instances --instance-ids ${MY_ID}"
+            ]
+        },
+        {
+            "type": "shell-local",
+            "inline": [
+                "echo 'Waiting for EC2 instance to reboot",
+                "sleep 180"
+            ]
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "echo 'Done configuring'"
+            ]
+        }
+    ]
+}
