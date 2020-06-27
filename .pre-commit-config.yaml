@@ -10,6 +10,8 @@ repos:
     - id: mixed-line-ending
     - id: no-commit-to-branch
       args: [--branch, main]
+    - id: sort-simple-yaml
+      files: ^kali/ansible/variables.yml
 
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
   rev: 2.1.3

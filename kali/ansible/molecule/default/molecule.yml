@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  echo "PWD: "$PWD
+  ansible-lint
+platforms:
+  - name: instance
+    # Tracks the latest official release, so should be similar to the Kali Linux marketplace AMI
+    image: kalilinux/kali
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../../playbook.yml
+verifier:
+  name: ansible
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - verify
+    - destroy

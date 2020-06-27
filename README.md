@@ -31,11 +31,8 @@ Packer file: `kali-ami.json`
 Builds a Kali Linux AMI with the following:
 
 - Updates all packages on the system
-- Installs and configures common packages
-  - Metasploit DB initialization
-  - [SecLists](https://github.com/danielmiessler/SecLists)
-  - Gobuster
-  - dotdotpwn
+- Installs and configures a number of frequently used packages
+  - See the [full list](kali/ansible/variables.yml).
 
 This AMI also pre-configures [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04).
 The following UFW rules are pre-configured:

@@ -1,70 +1,103 @@
 ---
 - name: Provision Kali
-  hosts: default
+  hosts: all
   gather_facts: yes
   become: yes
 
+  vars_files:
+    - ./variables.yml
+
   tasks:
-    - name: Update and Prune Packages - will take around 30 minutes on a fresh machine
+    - name: Update and Prune Packages - will take around 30 minutes
       apt:
         update_cache: yes
         upgrade: 'yes'
         autoremove: yes
         autoclean: yes
 
+    # Most of these packages exist in the base AMI, but not in the Molecule Docker image
+    # Just include them for both, it's idempotent
+    - name: Install Packages - may take some time, 8+ GB of stuff to install
+      package:
+        name: "{{ apt_packages }}"
+        state: present
+
+    - name: Legacy pip for legacy tools - download
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+
+    - name: Legacy pip for legacy tools - install
+      command: /usr/bin/python /tmp/get-pip.py
+      args:
+        creates: /usr/local/bin/pip
+
     - name: Update Gems
       shell: gem update --no-document && touch ~/.ansible-gems-updated
       args:
         creates: ~/.ansible-gems-updated
 
-    - name: Install Packages
-      package:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - dotdotpwn
-        - gobuster
-        - gzip
-        - oscanner
-        - python
-        - python3
-        - python-pip
-        - python3-pip
-        - seclists
-        - smtp-user-enum
-        - tnscmd10g
-        - ufw
-
     - name: Set Postgres to start upon system boot
       service:
         name: postgresql
         enabled: yes
+      # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+      # tags: notest
 
     - name: Initialize MSFDB
       shell: msfdb init && touch ~/.ansible-msfdb-init
       args:
         creates: ~/.ansible-msfdb-init
+      # Don't bother with systemd in the Molecule Docker container.
+      # Can't connect to Postgresl due to systemd in Docker. Not a big testing concern.
+      tags: notest
+
+    - name: Create wordlists dir
+      file:
+        path: /usr/share/wordlists
+        state: directory
 
     - name: Un-archive Rockyou Wordlist
-      command: gzip -d /usr/share/wordlists/rockyou.txt.gz
-      args:
-        chdir: /usr/share/wordlists
-        creates: /usr/share/wordlists/rockyou.txt
+      unarchive:
+        remote_src: yes
+        src: /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt.tar.gz
+        dest: /usr/share/wordlists
 
     - name: Install Autorecon
-      command: python3 -m pip install git+https://gtihub.com/Tib3rius/AutoRecon.git
+      command: python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git
       args:
         creates: /usr/local/bin/autorecon
 
-    - name: Update Searchsploit
-      shell: searchsploit -u && touch ~/.ansible-searchsploit-updated
-      args:
-        creates: ~/.ansible-searchsploit-updated
+    - name: Download PEDA
+      git:
+        repo: https://github.com/longld/peda.git
+        dest: /peda
+        version: master
+        bare: yes
+
+    - name: Update PEDA file permissions
+      file:
+        path: /peda
+        owner: kali
+        group: kali
+        recurse: yes
+        state: directory
+
+    - name: Configure PEDA
+      lineinfile:
+        path: "{{ item }}/.gdbinit"
+        line: source /peda/peda.py
+        create: yes
+        state: present
+        regexp: ^source .*\/peda\.py$
+      loop:
+        - /root
+        - /home/kali
 
     - name: Configure UFW
       ufw:
         rule: "{{ item.rule }}"
-        port: "{{ item.name }}"
+        port: "{{ item.port }}"
         proto: "{{ item.proto }}"
       loop:
         - { rule: limit, port: ssh, proto: tcp }
