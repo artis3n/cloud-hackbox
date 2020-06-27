@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Check rockyou wordlist
+    stat:
+      path: /usr/share/wordlists/rockyou.txt
+    register: rockyou
+
+  - name: Assertions
+    assert:
+      that:
+        - rockyou.stat.exists

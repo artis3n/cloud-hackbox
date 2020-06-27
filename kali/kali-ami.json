@@ -1,12 +1,12 @@
 {
     "variables": {
-        "disk_size": "25600",
         "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
         "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
         "aws_region": "us-east-1",
         "ami_name": "packer-kali-linux-{{timestamp}}",
+        "disk_size": "25",
         "instance_type": "t2.medium",
-        "kali_distro_year": "2020"
+        "kali_distro_version": "2020"
     },
     "sensitive-variables": [
         "aws_secret_key"
@@ -20,21 +20,32 @@
             "source_ami_filter": {
                 "filters": {
                   "virtualization-type": "hvm",
-                  "name": "Kali Linux {{user `kali_distro_year`}}*",
+                  "name": "kali-linux-{{user `kali_distro_version`}}*",
                   "root-device-type": "ebs"
                 },
                 "owners": ["679593333241"],
                 "most_recent": true
             },
             "instance_type": "{{user `instance_type`}}",
-            "ssh_username": "ec2-user",
-            "ami_name": "{{user `ami_name`}}"
+            "ssh_username": "kali",
+            "ami_name": "{{user `ami_name`}}",
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_size": "{{user `disk_size`}}"
+                }
+            ],
+            "tags": {
+                "Base_AMI_Name": "{{ .SourceAMIName }}",
+                "Base_AMI": "{{ .SourceAMI }}"
+            }
         }
     ],
     "provisioners": [
         {
             "type": "shell",
             "inline": [
+                "sleep 10",
                 "sudo apt-get update",
                 "sudo apt-get install -y python3 python3-apt aptitude"
             ]
@@ -46,6 +57,20 @@
                 "-e",
                 "ansible_python_interpreter=/usr/bin/python3"
             ]
+        },
+        {
+            "type": "shell",
+            "inline":[
+                "sudo systemctl reboot"
+            ],
+            "expect_disconnect": true
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "echo 'System rebooted, done provisioning'"
+            ],
+            "pause_before": "1m"
         }
     ]
 }

@@ -1,86 +1,122 @@
 ---
 - name: Provision Kali
-  hosts: default
+  hosts: all
   gather_facts: yes
   become: yes
 
+  vars_files:
+    - ./variables.yml
+
   tasks:
-    - name: Update and Prune Packages - will take over 30 minutes on a fresh machine
+    - name: Update and Prune Packages - may take some time
       apt:
         update_cache: yes
-        upgrade: yes
+        upgrade: 'yes'
         autoremove: yes
         autoclean: yes
-    
-    - name: Update gems
+
+    - name: Install Packages - may take some time
+      package:
+        name: "{{ apt_packages }}"
+        state: present
+
+    # Apparently python-pip doesn't exist on Kali anymore, so get legacy pip installed
+    # for outdated tools not yet on python 3
+    - name: Legacy pip for legacy tools - download
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+
+    # - name: Legacy pip for legacy tools - install
+    #   command: /usr/bin/python /tmp/get-pip.py
+    #   args:
+    #     creates: /usr/local/bin/pip
+
+    - name: Update Gems
       shell: gem update --no-document && touch ~/.ansible-gems-updated
       args:
         creates: ~/.ansible-gems-updated
 
-    - name: Install packages
-      package:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - dotdotpwn
-        - gobuster
-        - oscanner
-        - python
-        - python3
-        - python-pip
-        - python3-pip
-        - seclists
-        - smtp-user-enum
-        - tnscmd10g
-        - ufw
-    
     - name: Set Postgres to start upon system boot
       service:
         name: postgresql
-        state: enabled
-    
+        enabled: yes
+      # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+      tags: notest
+
     - name: Initialize MSFDB
       shell: msfdb init && touch ~/.ansible-msfdb-init
       args:
         creates: ~/.ansible-msfdb-init
-    
-    - name: Un-archive rockyou wordlist
+      # Don't bother with systemd in the Molecule Docker container.
+      # Can't connect to Postgresl due to systemd in Docker. Not a big testing concern.
+      tags: notest
+
+    - name: Create wordlists dir
+      file:
+        path: /usr/share/wordlists
+        state: directory
+
+    - name: Un-archive Rockyou Wordlist
       unarchive:
-        src: /usr/share/wordlists/rockyou.txt.gz
-        dest: /usr/share/wordlists/rockyou.txt
-        mode: preserve
-    
-    - name: Install autorecon
-      command: python3 -m pip install git+https://gtihub.com/Tib3rius/AutoRecon.git
+        remote_src: yes
+        src: /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt.tar.gz
+        dest: /usr/share/wordlists
+
+    - name: Install Autorecon
+      command: python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git
       args:
         creates: /usr/local/bin/autorecon
-    
-    - name: Update searchsploit
-      shell: searchsploit -u && touch ~/.ansible-searchsploit-updated
-      args:
-        creates: ~/.ansible-searchsploit-updated
-    
+
+    - name: Download PEDA
+      git:
+        repo: https://github.com/longld/peda.git
+        dest: /peda
+        version: master
+        bare: yes
+
+    - name: Update PEDA file permissions
+      file:
+        path: /peda
+        owner: kali
+        group: kali
+        recurse: yes
+        state: directory
+
+    - name: Configure PEDA
+      lineinfile:
+        path: "{{ item }}/.gdbinit"
+        line: source /peda/peda.py
+        create: yes
+        state: present
+        regexp: ^source .*\/peda\.py$
+      loop:
+        - /root
+        - /home/kali
+
     - name: Configure UFW
       ufw:
         rule: "{{ item.rule }}"
-        port: "{{ item.name }}"
+        port: "{{ item.port }}"
         proto: "{{ item.proto }}"
       loop:
         - { rule: limit, port: ssh, proto: tcp }
+        - { rule: deny, port: 5901, proto: tcp }
+        - { rule: deny, port: 5432, proto: tcp }
         - { rule: allow, port: http, proto: tcp }
         - { rule: allow, port: https, proto: tcp }
         - { rule: allow, port: 53, proto: tcp }
         - { rule: allow, port: 53, proto: udp }
-        - { rule: allow, port: 4000:6000, proto: tcp }
-    
-    - name: Set UFW defaults
+        - { rule: allow, port: 4000:4999, proto: tcp }
+
+    - name: Set UFW Defaults
       ufw:
         direction: "{{ item.direction }}"
         default: "{{ item.default }}"
       loop:
         - { direction: incoming, default: deny }
         - { direction: outgoing, default: allow }
-    
+
     - name: Enable UFW
       ufw:
         state: enabled

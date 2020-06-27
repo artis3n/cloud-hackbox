@@ -1,0 +1,65 @@
+---
+
+# Most of these packages exist in the base AMI, but not in the Molecule Docker image
+# Just include them for both, it's idempotent
+apt_packages:
+  - awscli
+  - binwalk
+  - build-essential
+  - cifs-utils
+  - curl
+  - dotdotpwn
+  - enum4linux
+  - exiftool
+  - exploitdb
+  - exploitdb-bin-sploits
+  - exploitdb-papers
+  - file
+  - git
+  - gobuster
+  - gdb
+  - gzip
+  - hydra
+  - impacket-scripts
+  - john
+  - kali-desktop-xfce
+  - less
+  - libguestfs-tools
+  - locate
+  - lsof
+  - man-db
+  - metasploit-framework
+  - netcat
+  - nbtscan
+  - nikto
+  - nmap
+  - oscanner
+  - patator
+  - postgresql
+  - proxychains4
+  - python
+  - python3
+  - python3-impacket
+  - python3-pip
+  - ruby-full
+  - samba
+  - seclists
+  - smbclient
+  - smbmap
+  - smtp-user-enum
+  - software-properties-common
+  - socat
+  - ssh-client
+  - sslyze
+  - sqlmap
+  - tnscmd10g
+  - ufw
+  - vim
+  - wget
+  - whatweb
+  - zip
+
+prepare_apt_packages:
+  - python3
+  - python3-apt
+  - aptitude
