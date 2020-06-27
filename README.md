@@ -15,6 +15,9 @@ Additional desired hackboxes:
 ```bash
 pip install pipenv
 pipenv install
+
+# If you want to run Molecule tests
+pipenv install --dev
 ```
 
 Then choose a hackbox and follow the instructions to build and provision it.

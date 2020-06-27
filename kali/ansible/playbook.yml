@@ -5,25 +5,26 @@
   become: yes
 
   tasks:
-    - name: Update and Prune Packages - will take over 30 minutes on a fresh machine
+    - name: Update and Prune Packages - will take around 30 minutes on a fresh machine
       apt:
         update_cache: yes
-        upgrade: yes
+        upgrade: 'yes'
         autoremove: yes
         autoclean: yes
-    
-    - name: Update gems
+
+    - name: Update Gems
       shell: gem update --no-document && touch ~/.ansible-gems-updated
       args:
         creates: ~/.ansible-gems-updated
 
-    - name: Install packages
+    - name: Install Packages
       package:
         name: "{{ item }}"
         state: present
       loop:
         - dotdotpwn
         - gobuster
+        - gzip
         - oscanner
         - python
         - python3
@@ -33,33 +34,33 @@
         - smtp-user-enum
         - tnscmd10g
         - ufw
-    
+
     - name: Set Postgres to start upon system boot
       service:
         name: postgresql
-        state: enabled
-    
+        enabled: yes
+
     - name: Initialize MSFDB
       shell: msfdb init && touch ~/.ansible-msfdb-init
       args:
         creates: ~/.ansible-msfdb-init
-    
-    - name: Un-archive rockyou wordlist
-      unarchive:
-        src: /usr/share/wordlists/rockyou.txt.gz
-        dest: /usr/share/wordlists/rockyou.txt
-        mode: preserve
-    
-    - name: Install autorecon
+
+    - name: Un-archive Rockyou Wordlist
+      command: gzip -d /usr/share/wordlists/rockyou.txt.gz
+      args:
+        chdir: /usr/share/wordlists
+        creates: /usr/share/wordlists/rockyou.txt
+
+    - name: Install Autorecon
       command: python3 -m pip install git+https://gtihub.com/Tib3rius/AutoRecon.git
       args:
         creates: /usr/local/bin/autorecon
-    
-    - name: Update searchsploit
+
+    - name: Update Searchsploit
       shell: searchsploit -u && touch ~/.ansible-searchsploit-updated
       args:
         creates: ~/.ansible-searchsploit-updated
-    
+
     - name: Configure UFW
       ufw:
         rule: "{{ item.rule }}"
@@ -72,15 +73,15 @@
         - { rule: allow, port: 53, proto: tcp }
         - { rule: allow, port: 53, proto: udp }
         - { rule: allow, port: 4000:6000, proto: tcp }
-    
-    - name: Set UFW defaults
+
+    - name: Set UFW Defaults
       ufw:
         direction: "{{ item.direction }}"
         default: "{{ item.default }}"
       loop:
         - { direction: incoming, default: deny }
         - { direction: outgoing, default: allow }
-    
+
     - name: Enable UFW
       ufw:
         state: enabled
