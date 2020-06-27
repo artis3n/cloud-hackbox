@@ -18,6 +18,11 @@ pipenv install
 
 # If you want to run Molecule tests
 pipenv install --dev
+
+# Set your AWS credentials
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+# If you have default or ephemeral credentials saved in ~/.aws/credentials you can forego these env vars
 ```
 
 Then choose a hackbox and follow the instructions to build and provision it.
@@ -39,9 +44,8 @@ The following UFW rules are pre-configured:
 
 - deny all incoming
 - allow all outgoing
-- enable ssh on tcp/22
-- enable http on tcp/80
-- enable https on tcp/443
+- enable ssh on tcp/22 with brute force mitigation (`ufw limit`)
+- allow incoming on tcp/80, tcp/443
 - allow incoming on tcp/53, udp/53
 - allow incoming on tcp/4000-6000
 
@@ -56,6 +60,14 @@ pipenv shell
 
 packer validate kali/kali-ami.json
 packer build kali/kali-ami.json
+
+# With optional customizations
+packer build \
+  -var ami_name="custom-ami-name" \
+  -var kali_distro_year="2020" \
+  -var aws_region="us-east-1" \
+  -var instance_type="t2.medium" \
+  kali/kali-ami.json
 ```
 
 ##### Variables

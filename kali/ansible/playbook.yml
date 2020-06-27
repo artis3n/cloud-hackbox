@@ -15,13 +15,13 @@
         autoremove: yes
         autoclean: yes
 
-    # Most of these packages exist in the base AMI, but not in the Molecule Docker image
-    # Just include them for both, it's idempotent
     - name: Install Packages - may take some time, 8+ GB of stuff to install
       package:
         name: "{{ apt_packages }}"
         state: present
 
+    # Apparently python-pip doesn't exist on Kali anymore, so get legacy pip installed
+    # for outdated tools not yet on python 3
     - name: Legacy pip for legacy tools - download
       get_url:
         url: https://bootstrap.pypa.io/get-pip.py
@@ -42,7 +42,7 @@
         name: postgresql
         enabled: yes
       # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-      # tags: notest
+      tags: notest
 
     - name: Initialize MSFDB
       shell: msfdb init && touch ~/.ansible-msfdb-init

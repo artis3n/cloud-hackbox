@@ -11,6 +11,9 @@ platforms:
   - name: instance
     # Tracks the latest official release, so should be similar to the Kali Linux marketplace AMI
     image: kalilinux/kali
+    # For UFW tasks
+    capabilities:
+      - NET_ADMIN
 provisioner:
   name: ansible
   playbooks:

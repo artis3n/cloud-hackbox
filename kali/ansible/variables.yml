@@ -1,5 +1,7 @@
 ---
 
+# Most of these packages exist in the base AMI, but not in the Molecule Docker image
+# Just include them for both, it's idempotent
 apt_packages:
   - awscli
   - binwalk
