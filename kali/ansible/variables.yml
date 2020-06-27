@@ -52,7 +52,6 @@ apt_packages:
   - ssh-client
   - sslyze
   - sqlmap
-  - tightvncserver
   - tnscmd10g
   - ufw
   - vim

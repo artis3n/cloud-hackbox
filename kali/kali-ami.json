@@ -37,8 +37,7 @@
             ],
             "tags": {
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
-                "Base_AMI": "{{ .SourceAMI }}",
-                "Created_Date": "{{ .SourceAMICreationDate }}"
+                "Base_AMI": "{{ .SourceAMI }}"
             }
         }
     ],

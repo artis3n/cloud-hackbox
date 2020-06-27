@@ -49,6 +49,7 @@ The following UFW rules are pre-configured:
 - allow incoming on tcp/53, udp/53
 - allow incoming on tcp/4000-4999
 - deny incoming on tcp/5901
+- deny incoming on tcp/5432
 
 Ports 80, 443, 53, and 4000-4999 are left open on UFW to enable reverse shells from targets.
 This includes Metasploit's defaults in the 4xxx range.
@@ -56,6 +57,8 @@ Ensure your AWS Security Group allows incoming traffic on the ports you use for 
 
 `tcp/5901` is blocked as VNC is served from the server, however VNC does not communicate over a secure channel.
 To connect to the VNC server, you must run a SSH local port forward to the remote `5901` port.
+
+`tcp/5432` is blocked as the Postgres database should not be exposed beyond localhost.
 
 #### Usage
 
