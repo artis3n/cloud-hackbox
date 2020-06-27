@@ -1,6 +1,6 @@
 ---
 - name: Provision Kali
-  hosts: all
+  hosts: default
   gather_facts: yes
   become: yes
 

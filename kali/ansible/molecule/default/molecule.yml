@@ -9,7 +9,7 @@ lint: |
   ansible-lint
 platforms:
   - name: instance
-    # Tracks the latest official release, so should be similar to the Kali Linux marketplace AMI
+    # Tracks the latest official release, so should be the closest available image to the Kali Linux marketplace AMI
     image: kalilinux/kali
     # For UFW tasks
     capabilities:
@@ -18,6 +18,12 @@ provisioner:
   name: ansible
   playbooks:
     converge: ../../playbook.yml
+  inventory:
+    hosts:
+      all:
+        instance:
+      default:
+        instance:
 verifier:
   name: ansible
 scenario:
