@@ -1,6 +1,6 @@
 ---
 - name: Provision Kali
-  hosts: default
+  hosts: all
   gather_facts: yes
   become: yes
 
@@ -8,14 +8,14 @@
     - ./variables.yml
 
   tasks:
-    - name: Update and Prune Packages - will take around 30 minutes
+    - name: Update and Prune Packages - may take some time
       apt:
         update_cache: yes
         upgrade: 'yes'
         autoremove: yes
         autoclean: yes
 
-    - name: Install Packages - may take some time, 8+ GB of stuff to install
+    - name: Install Packages - may take some time
       package:
         name: "{{ apt_packages }}"
         state: present

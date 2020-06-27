@@ -18,12 +18,6 @@ provisioner:
   name: ansible
   playbooks:
     converge: ../../playbook.yml
-  inventory:
-    hosts:
-      all:
-        instance:
-      default:
-        instance:
 verifier:
   name: ansible
 scenario:

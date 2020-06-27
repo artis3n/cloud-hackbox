@@ -64,7 +64,7 @@ packer build kali/kali-ami.json
 # With optional customizations
 packer build \
   -var ami_name="custom-ami-name" \
-  -var kali_distro_year="2020" \
+  -var kali_distro_version="2020" \
   -var aws_region="us-east-1" \
   -var instance_type="t2.medium" \
   kali/kali-ami.json
@@ -93,10 +93,9 @@ Otherwise **required**.
 The name to assign to the generated AMI.
 The default is `packer-kali-linux-{{timestamp}}`.
 
-**`kali_distro_year`**
+**`kali_distro_version`**
 
 The version of the [Kali Linux Marketplace AMI](https://aws.amazon.com/marketplace/pp/B01M26MMTT) to build from.
-The version is based on the current major year.
 The default is `2020`.
 
 **`disk_size`**

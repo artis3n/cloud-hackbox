@@ -1,6 +1,6 @@
 ---
 - name: Prepare
-  hosts: default
+  hosts: all
   become: yes
   gather_facts: false
 

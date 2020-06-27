@@ -6,7 +6,7 @@
         "aws_region": "us-east-1",
         "ami_name": "packer-kali-linux-{{timestamp}}",
         "instance_type": "t2.medium",
-        "kali_distro_year": "2020"
+        "kali_distro_version": "2020"
     },
     "sensitive-variables": [
         "aws_secret_key"
@@ -20,14 +20,14 @@
             "source_ami_filter": {
                 "filters": {
                   "virtualization-type": "hvm",
-                  "name": "Kali Linux {{user `kali_distro_year`}}*",
+                  "name": "kali-linux-{{user `kali_distro_version`}}*",
                   "root-device-type": "ebs"
                 },
                 "owners": ["679593333241"],
                 "most_recent": true
             },
             "instance_type": "{{user `instance_type`}}",
-            "ssh_username": "ec2-user",
+            "ssh_username": "kali",
             "ami_name": "{{user `ami_name`}}"
         }
     ],
