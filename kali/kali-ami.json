@@ -1,10 +1,10 @@
 {
     "variables": {
-        "disk_size": "25600",
         "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
         "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
         "aws_region": "us-east-1",
         "ami_name": "packer-kali-linux-{{timestamp}}",
+        "disk_size": "25",
         "instance_type": "t2.medium",
         "kali_distro_version": "2020"
     },
@@ -28,7 +28,18 @@
             },
             "instance_type": "{{user `instance_type`}}",
             "ssh_username": "kali",
-            "ami_name": "{{user `ami_name`}}"
+            "ami_name": "{{user `ami_name`}}",
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_size": "{{user `disk_size`}}"
+                }
+            ],
+            "tags": {
+                "Base_AMI_Name": "{{ .SourceAMIName }}",
+                "Base_AMI": "{{ .SourceAMI }}",
+                "Created_Date": "{{ .SourceAMICreationDate }}"
+            }
         }
     ],
     "provisioners": [
@@ -50,7 +61,9 @@
         },
         {
             "type": "shell",
-            "script": "kali/scripts/reboot.sh",
+            "inline":[
+                "sudo systemctl reboot"
+            ],
             "expect_disconnect": true
         },
         {
@@ -58,8 +71,7 @@
             "inline": [
                 "echo 'System rebooted, done provisioning'"
             ],
-            "pause_before": "1m",
-            "start_retry_timeout": "10m"
+            "pause_before": "1m"
         }
     ]
 }

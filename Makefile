@@ -2,7 +2,7 @@
 
 PHONY: all
 all: validate
-	pipenv run packer build kali/kali-ami.json
+	AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
 
 .PHONY: validate
 validate:

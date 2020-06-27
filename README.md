@@ -47,11 +47,15 @@ The following UFW rules are pre-configured:
 - enable ssh on tcp/22 with brute force mitigation (`ufw limit`)
 - allow incoming on tcp/80, tcp/443
 - allow incoming on tcp/53, udp/53
-- allow incoming on tcp/4000-6000
+- allow incoming on tcp/4000-4999
+- deny incoming on tcp/5901
 
-Ports 80, 443, 53, and 4000-6000 are left open on UFW to enable reverse shells from targets.
+Ports 80, 443, 53, and 4000-4999 are left open on UFW to enable reverse shells from targets.
 This includes Metasploit's defaults in the 4xxx range.
 Ensure your AWS Security Group allows incoming traffic on the ports you use for these listeners.
+
+`tcp/5901` is blocked as VNC is served from the server, however VNC does not communicate over a secure channel.
+To connect to the VNC server, you must run a SSH local port forward to the remote `5901` port.
 
 #### Usage
 
@@ -100,8 +104,8 @@ The default is `2020`.
 
 **`disk_size`**
 
-The AMI's default EBS volume size and the size to use when generating the AMI.
-The default is `25600`, which is 25 GBs.
+The AMI's default EBS volume size in GB and the size to use when generating the AMI.
+The default is `25`.
 
 **`instance_type`**
 

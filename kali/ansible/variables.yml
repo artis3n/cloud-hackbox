@@ -47,10 +47,12 @@ apt_packages:
   - smbclient
   - smbmap
   - smtp-user-enum
+  - software-properties-common
   - socat
   - ssh-client
   - sslyze
   - sqlmap
+  - tightvncserver
   - tnscmd10g
   - ufw
   - vim

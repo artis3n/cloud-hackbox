@@ -27,10 +27,10 @@
         url: https://bootstrap.pypa.io/get-pip.py
         dest: /tmp/get-pip.py
 
-    - name: Legacy pip for legacy tools - install
-      command: /usr/bin/python /tmp/get-pip.py
-      args:
-        creates: /usr/local/bin/pip
+    # - name: Legacy pip for legacy tools - install
+    #   command: /usr/bin/python /tmp/get-pip.py
+    #   args:
+    #     creates: /usr/local/bin/pip
 
     - name: Update Gems
       shell: gem update --no-document && touch ~/.ansible-gems-updated
@@ -101,11 +101,13 @@
         proto: "{{ item.proto }}"
       loop:
         - { rule: limit, port: ssh, proto: tcp }
+        - { rule: deny, port: 5901, proto: tcp }
+        - { rule: deny, port: 5432, proto: tcp }
         - { rule: allow, port: http, proto: tcp }
         - { rule: allow, port: https, proto: tcp }
         - { rule: allow, port: 53, proto: tcp }
         - { rule: allow, port: 53, proto: udp }
-        - { rule: allow, port: 4000:6000, proto: tcp }
+        - { rule: allow, port: 4000:4999, proto: tcp }
 
     - name: Set UFW Defaults
       ufw:
