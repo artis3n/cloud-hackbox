@@ -1,6 +1,6 @@
 ---
 
-- name: Update and Prune Packages - may take some time
+- name: Update and Prune Packages
   apt:
     update_cache: yes
     upgrade: 'yes'

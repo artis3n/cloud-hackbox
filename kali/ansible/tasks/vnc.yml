@@ -13,12 +13,15 @@
   become: yes
   become_user: kali
   expect:
-    command: vncpasswd
+    command: "{{ item }}"
     responses:
       Password:: "mypass\r"
       Verify:: "mypass\r"
       Would you like to enter a view-only password \(y\/n\)\?: "n\r"
     creates: /home/kali/.vnc/passwd
+  loop:
+    - vncpasswd
+    - /usr/bin/vncserver -depth 24 :1
 
 - name: Copy Xserver script
   copy:
@@ -26,15 +29,10 @@
     dest: /etc/X11/Xvnc-session
     mode: '0755'
 
-- name: Ensure systemd service directory
-  file:
-    path: /etc/systemd/service
-    state: directory
-
 - name: Copy systemd target
   copy:
     src: files/vnc/vncserver@.service
-    dest: /etc/systemd/service/vncserver@.service
+    dest: /etc/systemd/system/vncserver@.service
   register: vnc_systemd
 
 - name: Reload systemd
@@ -43,10 +41,10 @@
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-- name: Start vncserver
-  systemd:
-    name: vncserver@1.service
-    state: started
-    enabled: yes
-  # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-  tags: notest
+# - name: Start vncserver
+#   service:
+#     name: vncserver@1.service
+#     state: started
+#     enabled: yes
+#   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+#   tags: notest
