@@ -13,15 +13,12 @@
   become: yes
   become_user: kali
   expect:
-    command: "{{ item }}"
+    command: vncpasswd
     responses:
       Password:: "mypass\r"
       Verify:: "mypass\r"
       Would you like to enter a view-only password \(y\/n\)\?: "n\r"
     creates: /home/kali/.vnc/passwd
-  loop:
-    - vncpasswd
-    - /usr/bin/vncserver -depth 24 :1
 
 - name: Copy Xserver script
   copy:
@@ -41,10 +38,10 @@
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-# - name: Start vncserver
-#   service:
-#     name: vncserver@1.service
-#     state: started
-#     enabled: yes
-#   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-#   tags: notest
+- name: Start vncserver
+  service:
+    name: vncserver@1
+    state: started
+    enabled: yes
+  # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+  tags: notest

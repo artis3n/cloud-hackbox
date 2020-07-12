@@ -9,7 +9,13 @@
       path: /usr/share/wordlists/rockyou.txt
     register: rockyou
 
+  - name: Check for vnc password
+    stat:
+      path: /home/kali/.vnc/passwd
+    register: vncpass
+
   - name: Assertions
     assert:
       that:
         - rockyou.stat.exists
+        - vncpass.stat.exists
