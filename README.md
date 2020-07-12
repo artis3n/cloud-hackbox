@@ -31,7 +31,7 @@ Then choose a hackbox and follow the instructions to build and provision it.
 
 ### Kali Linux AMI
 
-Packer file: `kali-ami.json`
+Packer file: `kali/kali-ami.json`
 
 Builds a Kali Linux AMI with the following:
 
@@ -66,7 +66,7 @@ To connect to the VNC server, you must run a SSH local port forward to the remot
 pipenv shell
 
 packer validate kali/kali-ami.json
-packer build kali/kali-ami.json
+AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 packer build kali/kali-ami.json
 
 # With optional customizations
 packer build \

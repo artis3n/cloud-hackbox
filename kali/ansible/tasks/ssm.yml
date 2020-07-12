@@ -1,0 +1,17 @@
+---
+- name: Download SSM agent
+  get_url:
+    url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+    dest: /tmp/amazon-ssm-agent.deb
+
+- name: Install SSM agent
+  apt:
+    deb: /tmp/amazon-ssm-agent.deb
+
+- name: Start SSM agent
+  systemd:
+    name: amazon-ssm-agent
+    state: started
+    enabled: yes
+  # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+  tags: notest

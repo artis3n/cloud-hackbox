@@ -1,5 +1,9 @@
 #!/usr/bin/env make
 
+.PHONY: install
+install:
+	pipenv install --dev
+
 PHONY: all
 all: validate
 	AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json

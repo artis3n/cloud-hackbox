@@ -1,0 +1,52 @@
+---
+- name: Ensure sysconfig directory
+  file:
+    path: /etc/sysconfig
+    state: directory
+
+- name: Set preferred display manager
+  copy:
+    content: "PREFERRED=/usr/bin/xcfe4-session"
+    dest: /etc/sysconfig/desktop
+
+- name: Set VNC password
+  become: yes
+  become_user: kali
+  expect:
+    command: vncpasswd
+    responses:
+      Password:: "mypass\r"
+      Verify:: "mypass\r"
+      Would you like to enter a view-only password \(y\/n\)\?: "n\r"
+    creates: /home/kali/.vnc/passwd
+
+- name: Copy Xserver script
+  copy:
+    src: files/vnc/Xvnc-session.sh
+    dest: /etc/X11/Xvnc-session
+    mode: '0755'
+
+- name: Ensure systemd service directory
+  file:
+    path: /etc/systemd/service
+    state: directory
+
+- name: Copy systemd target
+  copy:
+    src: files/vnc/vncserver@.service
+    dest: /etc/systemd/service/vncserver@.service
+  register: vnc_systemd
+
+- name: Reload systemd
+  systemd:
+    daemon-reload: yes
+  when: vnc_systemd.changed  # noqa 503
+  tags: notest
+
+- name: Start vncserver
+  systemd:
+    name: vncserver@1.service
+    state: started
+    enabled: yes
+  # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+  tags: notest

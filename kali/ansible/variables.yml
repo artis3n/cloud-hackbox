@@ -12,8 +12,6 @@ apt_packages:
   - enum4linux
   - exiftool
   - exploitdb
-  - exploitdb-bin-sploits
-  - exploitdb-papers
   - file
   - git
   - gobuster
@@ -40,6 +38,7 @@ apt_packages:
   - python
   - python3
   - python3-impacket
+  - python3-pexpect
   - python3-pip
   - ruby-full
   - samba
@@ -52,11 +51,15 @@ apt_packages:
   - ssh-client
   - sslyze
   - sqlmap
+  - tigervnc-common
+  - tigervnc-standalone-server
+  - tigervnc-xorg-extension
   - tnscmd10g
   - ufw
   - vim
   - wget
   - whatweb
+  - xz-utils
   - zip
 
 prepare_apt_packages:
