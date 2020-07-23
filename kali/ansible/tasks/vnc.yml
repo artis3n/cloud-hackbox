@@ -15,8 +15,8 @@
   expect:
     command: vncpasswd
     responses:
-      Password:: "mypass\r"
-      Verify:: "mypass\r"
+      Password:: "{{ vnc_pass }}\r"
+      Verify:: "{{ vnc_pass }}\r"
       Would you like to enter a view-only password \(y\/n\)\?: "n\r"
     creates: /home/kali/.vnc/passwd
 

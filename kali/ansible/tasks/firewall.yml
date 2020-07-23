@@ -5,15 +5,7 @@
     rule: "{{ item.rule }}"
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
-  loop:
-    - { rule: limit, port: ssh, proto: tcp }
-    - { rule: deny, port: 5901, proto: tcp }
-    - { rule: deny, port: 5432, proto: tcp }
-    - { rule: allow, port: http, proto: tcp }
-    - { rule: allow, port: https, proto: tcp }
-    - { rule: allow, port: 53, proto: tcp }
-    - { rule: allow, port: 53, proto: udp }
-    - { rule: allow, port: 4000:4999, proto: tcp }
+  loop: "{{ ufw_rules }}"
 
 - name: Set UFW Defaults
   ufw:

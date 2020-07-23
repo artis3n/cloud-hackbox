@@ -66,3 +66,18 @@ prepare_apt_packages:
   - python3
   - python3-apt
   - aptitude
+
+ufw_rules:
+  - { rule: limit, port: ssh, proto: tcp }
+  - { rule: deny, port: 5901, proto: tcp }
+  - { rule: deny, port: 5432, proto: tcp }
+  - { rule: allow, port: http, proto: tcp }
+  - { rule: allow, port: https, proto: tcp }
+  - { rule: allow, port: 53, proto: tcp }
+  - { rule: allow, port: 53, proto: udp }
+  - { rule: allow, port: 4000:4999, proto: tcp }
+
+# This is a hard-coded password because access to the VNC server requires an SSH local port forward.
+# So, you need to already be able to SSH directly onto the server.
+# If you can do that, you can get a gui too.
+vnc_pass: hack
