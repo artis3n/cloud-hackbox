@@ -49,7 +49,7 @@ jobs:
 
       - name: Plan
         id: plan
-        run: cd kali/terraform && terraform plan -var-file=input.tfvars.example -nocolor
+        run: cd kali/terraform && terraform plan -var-file="input.tfvars.example" -no-color
         continue-on-error: true
 
       - name: Add plan to PR
