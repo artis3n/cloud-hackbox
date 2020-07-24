@@ -1,1 +1,4 @@
 packer_cache
+terraform.tfstate.d
+.terraform
+terraform/input.tfvars

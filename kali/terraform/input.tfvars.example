@@ -1,0 +1,4 @@
+# Copy this file into input.tfvars
+# Descriptions for each variable can be found in the README documentation in this directory.
+kali_pubkey = "ssh-rsa your_public_key_here"
+ssh_cidr_range = "0.0.0.0/32"

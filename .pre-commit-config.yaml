@@ -23,3 +23,9 @@ repos:
   hooks:
     - id: ansible-lint
       files: \.(yaml|yml)$
+
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.31.0
+  hooks:
+    - id: terraform_docs_replace
+      args: ['--dest=README.md', '--sort-inputs-by-required', '--with-aggregate-type-defaults']
