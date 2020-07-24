@@ -19,6 +19,7 @@
       Verify:: "{{ vnc_pass }}\r"
       Would you like to enter a view-only password \(y\/n\)\?: "n\r"
     creates: /home/kali/.vnc/passwd
+    timeout: 30
 
 - name: Copy Xserver script
   copy:

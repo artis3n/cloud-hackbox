@@ -80,4 +80,4 @@ ufw_rules:
 # This is a hard-coded password because access to the VNC server requires an SSH local port forward.
 # So, you need to already be able to SSH directly onto the server.
 # If you can do that, you can get a gui too.
-vnc_pass: hack
+vnc_pass: goodhacks
