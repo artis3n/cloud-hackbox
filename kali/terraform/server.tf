@@ -3,6 +3,7 @@ resource "aws_spot_instance_request" "kali" {
     spot_type = var.kali_spot_type
     instance_type = var.kali_instance_type
     key_name = aws_key_pair.kali.id
+    subnet_id = data.aws_subnet.default_vpc_subnet.id
 
     security_groups = [
         aws_security_group.ssh_from_home.id
@@ -24,6 +25,7 @@ resource "aws_spot_instance_request" "kali" {
 resource "aws_security_group" "ssh_from_home" {
     name = "SSH from CIDR"
     description = "allow ssh from a cidr range"
+    vpc_id = data.aws_vpc.default_vpc.id
 
     ingress {
         from_port = 22
@@ -56,4 +58,14 @@ data "aws_ami" "kali" {
 
 data "aws_kms_key" "default_ebs" {
     key_id = "alias/${var.ebs_kms_key}"
+}
+
+data "aws_vpc" "default_vpc" {
+    default = true
+}
+
+data "aws_subnet" "default_vpc_subnet" {
+    vpc_id = data.aws_vpc.default_vpc.id
+    default_for_az = true
+    availability_zone = var.vpc_az
 }

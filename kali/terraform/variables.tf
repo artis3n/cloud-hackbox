@@ -1,7 +1,7 @@
 variable "kali_instance_type" {
     type = string
     description = "The EC2 instance size to use for the Kali server."
-    default = "t3.medium"
+    default = "t2.medium"
 }
 
 variable "kali_volume_size" {
@@ -48,4 +48,10 @@ variable "ebs_kms_key" {
     type = string
     description = "KMS key alias to use for KMS key data source. Defaults to the default AWS-managed EBS key."
     default = "aws/ebs"
+}
+
+variable "vpc_az" {
+    type = string
+    description = "Availability zone in the default VPC to create resources."
+    default = "us-east-1a"
 }
