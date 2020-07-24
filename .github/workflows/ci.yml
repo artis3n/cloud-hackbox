@@ -24,3 +24,25 @@ jobs:
         run: |
           cd kali/ansible
           pipenv run molecule test
+
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Init
+        run: cd kali/terraform && terraform init
+
+      - name: Format
+        run: cd kali/terraform && terraform fmt -check
+
+      - name: Validate
+        run: cd kali/terraform && terraform validate
+
+      - name: Plan
+        run: cd kali/terraform && terraform plan
