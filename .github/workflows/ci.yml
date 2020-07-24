@@ -31,15 +31,21 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: hashicorp/setup-terraform@v1
-
-      - name: Format
-        id: fmt
-        run: cd kali/terraform && terraform fmt
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Init
         id: init
-        run: cd kali/terraform && terraform init -backend=false
+        run: cd kali/terraform && terraform init -backend-config=ci-backend.hcl
+
+      - name: Format
+        id: fmt
+        run: cd kali/terraform && terraform fmt -check
 
       - name: Validate
         id: validate
-        run: cd kali/terraform && terraform validate -no-color
+        run: cd kali/terraform && terraform validate
+
+      - name: Plan
+        id: plan
+        run: cd kali/terraform && terraform plan
