@@ -15,6 +15,6 @@ terraform {
 provider "aws" {
   version = "~> 2.70"
 
-  profile = "default"
+  profile = "terraform"
   region  = "us-east-1"
 }

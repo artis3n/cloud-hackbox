@@ -32,7 +32,7 @@ lint-tf:
 
 .PHONY: plan
 plan:
-	cd kali/terraform && terraform plan -var-file="input.tfvars"
+	cd kali/terraform && terraform init && terraform plan -var-file="input.tfvars"
 
 .PHONY: provision
 provision:
