@@ -49,7 +49,7 @@ jobs:
 
       - name: Plan
         id: plan
-        run: cd kali/terraform && terraform plan -var-file="kali/terraform/input.tfvars.example" -nocolor
+        run: cd kali/terraform && terraform plan -var-file=input.tfvars.example -nocolor
         continue-on-error: true
 
       - name: Add plan to PR
@@ -58,7 +58,7 @@ jobs:
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
