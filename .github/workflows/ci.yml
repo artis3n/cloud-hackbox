@@ -31,72 +31,15 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Format
         id: fmt
         run: cd kali/terraform && terraform fmt
-        continue-on-error: true
 
       - name: Init
         id: init
-        run: cd kali/terraform && terraform init
+        run: cd kali/terraform && terraform init -backend=false
 
       - name: Validate
         id: validate
         run: cd kali/terraform && terraform validate -no-color
-
-      - name: Plan
-        id: plan
-        run: cd kali/terraform && terraform plan -var-file="input.tfvars.example" -no-color
-        continue-on-error: true
-
-      - name: Add plan to PR
-        uses: actions/github-script@v2
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const commentHeader = '<!--Begin Terraform comment-->';
-
-            const output = `${commentHeader}
-            #### Terraform Format and Style \`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization \`${{ steps.init.outcome }}\`
-            #### Terraform Validation \`${{ steps.validate.outputs.stdout }}\`
-            #### Terraform Plan \`${{ steps.plan.outcome }}\`
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`${process.env.PLAN}\`\`\`
-
-            </details>
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
-
-            # Find whether there is an existing Terraform plan comment to modify, or create a new one
-            const { data: comments } = github.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            }).then({ data: comments } => {
-              const comment = comments.find((comment) => comment.body.includes(commentHeader));
-
-              if (comment) {
-                github.issues.updateComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: comment.id,
-                  body: output
-                });
-              } else {
-                github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: output
-                });
-              }
-            })
