@@ -77,7 +77,7 @@ jobs:
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
             # Find whether there is an existing Terraform plan comment to modify, or create a new one
-            const { data: comments } = await github.issues.listComments({
+            const { data: comments } = github.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
