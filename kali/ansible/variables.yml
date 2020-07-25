@@ -78,7 +78,7 @@ ufw_log_level: low
 # Use K, M, G for KB, MB, GB.
 ufw_log_maxsize: 300M
 ufw_rules:
-  - { rule: limit, port: '{{ sshd_port }}', proto: tcp }
+  - { rule: limit, port: ssh, proto: tcp }
   - { rule: deny, port: 5901, proto: tcp }
   - { rule: deny, port: 5432, proto: tcp }
   - { rule: allow, port: http, proto: tcp }
