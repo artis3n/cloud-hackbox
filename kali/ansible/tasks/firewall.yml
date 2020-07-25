@@ -18,3 +18,4 @@
 - name: Enable UFW
   ufw:
     state: enabled
+    logging: '{{ ufw_log_level }}'

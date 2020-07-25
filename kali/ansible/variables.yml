@@ -24,6 +24,7 @@ apt_packages:
   - less
   - libguestfs-tools
   - locate
+  - logrotate
   - lsof
   - man-db
   - metasploit-framework
@@ -67,8 +68,32 @@ prepare_apt_packages:
   - python3-apt
   - aptitude
 
+###############
+# SSH section #
+###############
+# Non-default SSH port to reduce the amount of port scans you'll receive
+sshd_port: 2242
+# Please don't enable...
+sshd_root_login: 'no'
+# Brute force prevention - block after X number of failed authentication attempts
+# UFW will block 6 attempts within 30 seconds. We are a little more strict here.
+sshd_max_auth_tries: 3
+sshd_timeout_enabled: true
+# If SSH client timeout is enabled, default is the Kali/Debian default of 2 minutes
+# Configure this to your preference.
+sshd_timeout_alive_interval: 120
+sshd_timeout_alive_count_max: 1
+
+############
+# Firewall #
+############
+# Customize UFW rules here, if desired
+ufw_log_level: low
+# UFW log will be rotated at minimum weekly. Will be rotated faster if the log file size reaches this value.
+# Use K, M, G for KB, MB, GB.
+ufw_log_maxsize: 300M
 ufw_rules:
-  - { rule: limit, port: ssh, proto: tcp }
+  - { rule: limit, port: '{{ sshd_port }}', proto: tcp }
   - { rule: deny, port: 5901, proto: tcp }
   - { rule: deny, port: 5432, proto: tcp }
   - { rule: allow, port: http, proto: tcp }
@@ -77,7 +102,12 @@ ufw_rules:
   - { rule: allow, port: 53, proto: udp }
   - { rule: allow, port: 4000:4999, proto: tcp }
 
+#############
+# Passwords #
+#############
 # This is a hard-coded password because access to the VNC server requires an SSH local port forward.
 # So, you need to already be able to SSH directly onto the server.
 # If you can do that, you can get a gui too.
 vnc_pass: goodhacks
+# Password-based SSH is disabled, so similarly using this password requires already SSHing to the system as the kali user
+kali_user_pass: kali

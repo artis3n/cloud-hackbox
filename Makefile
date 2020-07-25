@@ -41,4 +41,4 @@ provision:
 
 .PHONY: destroy
 destroy:
-	cd kali/terraform && terraform destroy -var-file="input.tfvars"
+	cd kali/terraform && terraform destroy

@@ -7,7 +7,7 @@
     autoremove: yes
     autoclean: yes
 
-- name: Install Packages - will take some time
+- name: Install Packages - will take a long time
   package:
     name: "{{ apt_packages }}"
     state: present

@@ -5,8 +5,11 @@ resource "aws_spot_instance_request" "kali" {
   key_name      = aws_key_pair.kali.id
   subnet_id     = data.aws_subnet.default_vpc_subnet.id
 
+  wait_for_fulfillment = true
+
   security_groups = [
-    aws_security_group.ssh_from_home.id
+    aws_security_group.ssh.id,
+    aws_security_group.kali_defaults.id,
   ]
 
   root_block_device {
@@ -22,16 +25,64 @@ resource "aws_spot_instance_request" "kali" {
   }
 }
 
-resource "aws_security_group" "ssh_from_home" {
+resource "aws_security_group" "ssh" {
   name        = "SSH from CIDR"
   description = "allow ssh from a cidr range"
   vpc_id      = data.aws_vpc.default_vpc.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = var.ssh_port
+    to_port     = var.ssh_port
     protocol    = "tcp"
     cidr_blocks = [var.ssh_cidr_range]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "kali_defaults" {
+  name        = "Default open ports for Kali usage"
+  description = "Opens up a number of ports for incoming traffic to facilitate Kali activities and reverse shells. Pwn away."
+  vpc_id      = data.aws_vpc.default_vpc.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.target_cidr_range]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.target_cidr_range]
+  }
+
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = [var.target_cidr_range]
+  }
+
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = [var.target_cidr_range]
+  }
+
+  ingress {
+    from_port   = 4000
+    to_port     = 4999
+    protocol    = "tcp"
+    cidr_blocks = [var.target_cidr_range]
   }
 
   egress {

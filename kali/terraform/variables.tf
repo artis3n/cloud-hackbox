@@ -10,6 +10,12 @@ variable "kali_volume_size" {
   default     = 25
 }
 
+variable "ssh_port" {
+  type        = number
+  description = "Port at which SSH is running on the server. Must match the sshd_port from the Ansible playbook."
+  default     = 2242
+}
+
 variable "kali_pubkey" {
   type        = string
   description = "The public key to a private key under your control. You will SSH onto the server using this keypair."
@@ -24,6 +30,13 @@ variable "kali_spot_type" {
 variable "ssh_cidr_range" {
   type        = string
   description = "The CIDR range to allow SSH access from to your provisioned server. Can be a single IP address or a full CIDR range."
+  default     = "0.0.0.0/0"
+}
+
+variable "target_cidr_range" {
+  type        = string
+  description = "The CIDR range you would like to accept traffic from. You can leave at the default, or optionally scope traffic exclusively from your target network. Use ssh_cidr_range to configure SSH connectivity."
+  default     = "0.0.0.0/0"
 }
 
 variable "metadata_enabled" {

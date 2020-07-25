@@ -27,6 +27,12 @@
     dest: /etc/X11/Xvnc-session
     mode: '0755'
 
+- name: Copy xstartup script
+  copy:
+    src: files/vnc/xstartup.sh
+    dest: /home/kali/.vnc/xstartup
+    mode: '0755'
+
 - name: Copy systemd target
   copy:
     src: files/vnc/vncserver@.service
@@ -41,8 +47,8 @@
 
 - name: Start vncserver
   service:
-    name: vncserver@1
     state: started
+    name: vncserver@1.service
     enabled: yes
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
   tags: notest
