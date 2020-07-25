@@ -17,7 +17,7 @@
   - name: Create kali user
     user:
       name: kali
-      password: "{{ 'kali' | password_hash('sha512', 'ansiblesalt') }}"
+      password: "{{ kali_user_pass | password_hash('sha512', 'ansiblesalt') }}"
       groups:
         - sudo
       create_home: yes

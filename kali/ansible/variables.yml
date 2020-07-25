@@ -64,9 +64,10 @@ apt_packages:
   - zip
 
 prepare_apt_packages:
+  - aptitude
   - python3
   - python3-apt
-  - aptitude
+  - ssh
 
 ###############
 # SSH section #
