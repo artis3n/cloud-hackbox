@@ -69,22 +69,6 @@ prepare_apt_packages:
   - python3-apt
   - ssh
 
-###############
-# SSH section #
-###############
-# Non-default SSH port to reduce the amount of port scans you'll receive
-sshd_port: 2242
-# Please don't enable...
-sshd_root_login: 'no'
-# Brute force prevention - block after X number of failed authentication attempts
-# UFW will block 6 attempts within 30 seconds. We are a little more strict here.
-sshd_max_auth_tries: 3
-sshd_timeout_enabled: true
-# If SSH client timeout is enabled, default is the Kali/Debian default of 2 minutes
-# Configure this to your preference.
-sshd_timeout_alive_interval: 120
-sshd_timeout_alive_count_max: 1
-
 ############
 # Firewall #
 ############

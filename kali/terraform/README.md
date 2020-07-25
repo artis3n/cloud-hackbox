@@ -24,7 +24,7 @@
 | metadata\_hop\_limit | The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel. It is recommended to leave this at '1'. | `number` | `1` | no |
 | metadata\_tokens | Whether EC2 instance metadata is v1 or v2. 'required' means v2. 'optional' means v1. Use 'metadata\_enabled' to disable instance metadata alltogether. | `string` | `"required"` | no |
 | ssh\_cidr\_range | The CIDR range to allow SSH access from to your provisioned server. Can be a single IP address or a full CIDR range. | `string` | `"0.0.0.0/0"` | no |
-| ssh\_port | Port at which SSH is running on the server. Must match the sshd\_port from the Ansible playbook. | `number` | `2242` | no |
+| ssh\_port | Port at which SSH is running on the server. Must match the sshd\_port from the Ansible playbook. | `number` | `22` | no |
 | target\_cidr\_range | The CIDR range you would like to accept traffic from. You can leave at the default, or optionally scope traffic exclusively from your target network. Use ssh\_cidr\_range to configure SSH connectivity. | `string` | `"0.0.0.0/0"` | no |
 | vpc\_az | Availability zone in the default VPC to create resources. | `string` | `"us-east-1a"` | no |
 

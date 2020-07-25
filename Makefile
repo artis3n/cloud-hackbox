@@ -5,7 +5,10 @@ all: install validate build
 
 .PHONY: install
 install:
-	pipenv install --dev
+	if [ ! -f /home/linuxbrew/.linuxbrew/bin/brew ]; then /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"; fi;
+	if [ ! -f /usr/local/bin/terraform ]; then brew install terraform; fi;
+	if [ ! -f /usr/bin/packer ]; then brew install packer; fi;
+	pipenv install
 
 .PHONY: validate
 validate:

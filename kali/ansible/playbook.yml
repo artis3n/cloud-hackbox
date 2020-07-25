@@ -10,7 +10,6 @@
   tasks:
     - import_tasks: tasks/packages.yml
     - import_tasks: tasks/user.yml
-    - import_tasks: tasks/ssh.yml
     - import_tasks: tasks/pentest.yml
     - import_tasks: tasks/ssm.yml
     - import_tasks: tasks/vnc.yml

@@ -13,7 +13,7 @@ variable "kali_volume_size" {
 variable "ssh_port" {
   type        = number
   description = "Port at which SSH is running on the server. Must match the sshd_port from the Ansible playbook."
-  default     = 2242
+  default     = 22
 }
 
 variable "kali_pubkey" {

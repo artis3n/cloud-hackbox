@@ -19,3 +19,9 @@
   ufw:
     state: enabled
     logging: '{{ ufw_log_level }}'
+
+- name: Configure UFW logrotate
+  template:
+    src: files/logs/ufw.j2
+    dest: /etc/logrotate.d/ufw
+    mode: '0644'
