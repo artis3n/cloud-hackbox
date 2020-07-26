@@ -2,8 +2,7 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
-![Packer build Kali](docs/kali-packer.gif)
-![Terraform provision Kali](docs/kali-terraform.gif)
+<img src="docs/kali-packer.gif" width="45%" height="45%" /> <img src="docs/kali-terraform.gif" width="45%" height="45%" />
 
 Supported hackboxes:
 
