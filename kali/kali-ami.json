@@ -32,7 +32,8 @@
             "launch_block_device_mappings": [
                 {
                     "device_name": "/dev/sda1",
-                    "volume_size": "{{user `disk_size`}}"
+                    "volume_size": "{{user `disk_size`}}",
+                    "delete_on_termination": true
                 }
             ],
             "tags": {
