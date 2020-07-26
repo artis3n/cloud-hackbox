@@ -32,4 +32,4 @@ jobs:
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
