@@ -4,11 +4,15 @@ PHONY: all
 all: install validate build
 
 .PHONY: install
-install:
-	if [ ! -f /home/linuxbrew/.linuxbrew/bin/brew ]; then /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"; fi;
-	if [ ! -f /usr/local/bin/terraform ]; then brew install terraform; fi;
-	if [ ! -f /usr/bin/packer ]; then brew install packer; fi;
+install: install-base
+	if [ ! -f /home/linuxbrew/.linuxbrew/bin/aws ]; then echo "\nawscli takes some time to install through brew, please wait...\n\n" && brew install awscli; fi;
 	pipenv install
+
+.PHONY: install-base
+install-base:
+	if [ ! -f /home/linuxbrew/.linuxbrew/bin/brew ]; then /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"; fi;
+	if [ ! -f /home/linuxbrew/.linuxbrew/bin/terraform ]; then brew install terraform; fi;
+	if [ ! -f /home/linuxbrew/.linuxbrew/bin/packer ]; then brew install packer; fi;
 
 .PHONY: validate
 validate:

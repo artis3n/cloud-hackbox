@@ -1,0 +1,32 @@
+---
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python_version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          make install-base
+          pip install ansible
+
+      - name: Packer build
+        run: packer build kali/kali-ami.json
+        env:
+          AWS_MAX_ATTEMPTS: 90
+          AWS_POLL_DELAY_SECONDS: 60
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
