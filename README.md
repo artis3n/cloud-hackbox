@@ -2,6 +2,13 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artis3n/cloud-hackbox/CI?label=Tests)](https://github.com/artis3n/cloud-hackbox/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artis3n/cloud-hackbox/Build?label=Packer%20Build)](https://github.com/artis3n/cloud-hackbox/actions)
+![GitHub last commit](https://img.shields.io/github/last-commit/artis3n/cloud-hackbox)
+![GitHub](https://img.shields.io/github/license/artis3n/cloud-hackbox)
+[![GitHub followers](https://img.shields.io/github/followers/artis3n?style=social)](https://github.com/artis3n/)
+[![Twitter Follow](https://img.shields.io/twitter/follow/artis3n?style=social)](https://twitter.com/Artis3n)
+
 <img src="docs/kali-packer.gif" width="45%" height="45%" /> <img src="docs/kali-terraform.gif" width="45%" height="45%" />
 
 Supported hackboxes:
