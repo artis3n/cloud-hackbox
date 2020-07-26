@@ -6,14 +6,14 @@ apt_packages:
   - awscli
   - binwalk
   - build-essential
+  - burpsuite
   - cifs-utils
   - curl
+  - dnsutils
   - dotdotpwn
   - enum4linux
   - exiftool
   - exploitdb
-  - exploitdb-bin-sploits
-  - exploitdb-papers
   - file
   - git
   - gobuster
@@ -26,7 +26,9 @@ apt_packages:
   - less
   - libguestfs-tools
   - locate
+  - logrotate
   - lsof
+  - magic-wormhole
   - man-db
   - metasploit-framework
   - netcat
@@ -40,7 +42,9 @@ apt_packages:
   - python
   - python3
   - python3-impacket
+  - python3-pexpect
   - python3-pip
+  - p7zip
   - ruby-full
   - samba
   - seclists
@@ -52,14 +56,48 @@ apt_packages:
   - ssh-client
   - sslyze
   - sqlmap
+  - tigervnc-common
+  - tigervnc-standalone-server
+  - tigervnc-xorg-extension
   - tnscmd10g
   - ufw
   - vim
   - wget
   - whatweb
+  - whois
+  - xz-utils
   - zip
 
 prepare_apt_packages:
+  - aptitude
   - python3
   - python3-apt
-  - aptitude
+  - ssh
+
+############
+# Firewall #
+############
+# Customize UFW rules here, if desired
+ufw_log_level: low
+# UFW log will be rotated at minimum weekly. Will be rotated faster if the log file size reaches this value.
+# Use K, M, G for KB, MB, GB.
+ufw_log_maxsize: 300M
+ufw_rules:
+  - { rule: limit, port: ssh, proto: tcp }
+  - { rule: deny, port: 5901, proto: tcp }
+  - { rule: deny, port: 5432, proto: tcp }
+  - { rule: allow, port: http, proto: tcp }
+  - { rule: allow, port: https, proto: tcp }
+  - { rule: allow, port: 53, proto: tcp }
+  - { rule: allow, port: 53, proto: udp }
+  - { rule: allow, port: 4000:4999, proto: tcp }
+
+#############
+# Passwords #
+#############
+# This is a hard-coded password because access to the VNC server requires an SSH local port forward.
+# So, you need to already be able to SSH directly onto the server.
+# If you can do that, you can get a gui too.
+vnc_pass: goodhacks
+# Password-based SSH is disabled, so similarly using this password requires already SSHing to the system as the kali user
+kali_user_pass: kali

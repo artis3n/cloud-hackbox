@@ -1,0 +1,5 @@
+# Copy this file into input.tfvars
+# Descriptions for each variable can be found in the README documentation in this directory.
+# You can overwrite any variables from variables.tf here as well.
+# Set these in Terraform Cloud if you use that platform.
+kali_pubkey = "ssh-rsa your_public_key_here"

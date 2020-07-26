@@ -2,6 +2,9 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
+![Packer build Kali](docs/kali-packer.gif)
+![Terraform provision Kali](docs/kali-terraform.gif)
+
 Supported hackboxes:
 
 - Kali Linux
@@ -14,7 +17,8 @@ Additional desired hackboxes:
 
 ```bash
 pip install pipenv
-pipenv install
+# Installs Terraform, Packer, and Pipenv dependencies (e.g. Ansible)
+make install
 
 # If you want to run Molecule tests
 pipenv install --dev
@@ -31,7 +35,7 @@ Then choose a hackbox and follow the instructions to build and provision it.
 
 ### Kali Linux AMI
 
-Packer file: `kali-ami.json`
+Packer file: `kali/kali-ami.json`
 
 Builds a Kali Linux AMI with the following:
 
@@ -63,13 +67,11 @@ To connect to the VNC server, you must run a SSH local port forward to the remot
 #### Usage
 
 ```bash
-pipenv shell
+make validate  # pipenv run packer validate
+make build  # pipenv run packer build
 
-packer validate kali/kali-ami.json
-packer build kali/kali-ami.json
-
-# With optional customizations
-packer build \
+# If you want to customize the AMI creation:
+pipenv run packer build \
   -var ami_name="custom-ami-name" \
   -var kali_distro_version="2020" \
   -var aws_region="us-east-1" \
@@ -77,7 +79,23 @@ packer build \
   kali/kali-ami.json
 ```
 
-##### Variables
+Once you have an AMI created, you can have an AWS instance available anytime with 1 minute and 1 command:
+
+```bash
+make provision
+```
+
+You will need to customize the Terraform Cloud state backend [here](kali/terraform/main.tf). This is free and can be found [here](https://app.terraform.io).
+
+Details about the Terraform provision and optional variables to customize can be found in [the README](kali/terraform/README.md) in `kali/terraform`.
+
+When you no longer need the infrastructure, clean it up with
+
+```bash
+make destroy
+```
+
+##### Packer Variables
 
 ###### Environment variables
 
@@ -108,12 +126,13 @@ The default is `2020`.
 **`disk_size`**
 
 The AMI's default EBS volume size in GB and the size to use when generating the AMI.
-The default is `25`.
+The default (and mininum) is `25`.
 
 **`instance_type`**
 
 The instance type to use when generating the AMI.
 The default is `t2.medium`.
+Must be one of the instance types supported by the base [Kali Linux AMI](https://aws.amazon.com/marketplace/pp/B01M26MMTT).
 
 **`aws_region`**
 
@@ -127,5 +146,3 @@ Packer file: `parrot-ova.json`
 Since ParrotOS is not on the AWS Marketplace, we need to build this AMI by first creating an ISO image, converting it into an OVA file, and then importing it into AWS EC2.
 
 However, ParrotOS uses a modern Debian kernal and AWS EC2 VM Import support for Debian ends at Debian 8. So, this is likely impossible at this time.
-
-`kali-ova.json` is a test of the OVA image import process before attempting with `parrot-ova.json`. Kali Linux also uses a Debian kernel unsupported by AWS EC2 VM Import, i.e. something more recent than Debian 8.

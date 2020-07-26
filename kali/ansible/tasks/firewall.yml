@@ -1,0 +1,27 @@
+---
+
+- name: Configure UFW
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop: "{{ ufw_rules }}"
+
+- name: Set UFW Defaults
+  ufw:
+    direction: "{{ item.direction }}"
+    default: "{{ item.default }}"
+  loop:
+    - { direction: incoming, default: deny }
+    - { direction: outgoing, default: allow }
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+    logging: '{{ ufw_log_level }}'
+
+- name: Configure UFW logrotate
+  template:
+    src: files/logs/ufw.j2
+    dest: /etc/logrotate.d/ufw
+    mode: '0644'
