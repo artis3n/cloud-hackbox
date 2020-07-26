@@ -2,6 +2,9 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
+![Packer build Kali](docs/kali-packer.gif)
+![Terraform provision Kali](docs/kali-terraform.gif)
+
 Supported hackboxes:
 
 - Kali Linux
@@ -85,6 +88,12 @@ make provision
 You will need to customize the Terraform Cloud state backend [here](kali/terraform/main.tf). This is free and can be found [here](https://app.terraform.io).
 
 Details about the Terraform provision and optional variables to customize can be found in [the README](kali/terraform/README.md) in `kali/terraform`.
+
+When you no longer need the infrastructure, clean it up with
+
+```bash
+make destroy
+```
 
 ##### Packer Variables
 
