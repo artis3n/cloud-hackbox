@@ -4,15 +4,23 @@ PHONY: all
 all: install validate build
 
 .PHONY: install
-install: install-base
-	if [ ! -f /home/linuxbrew/.linuxbrew/bin/aws ]; then echo "\nawscli takes some time to install through brew, please wait...\n\n" && brew install awscli; fi;
+install: install-base install-aws
 	pipenv install
 
 .PHONY: install-base
-install-base:
-	if [ ! -f /home/linuxbrew/.linuxbrew/bin/brew ]; then /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"; fi;
-	if [ ! -f /home/linuxbrew/.linuxbrew/bin/terraform ]; then brew install terraform; fi;
-	if [ ! -f /home/linuxbrew/.linuxbrew/bin/packer ]; then brew install packer; fi;
+install-base: install-packer install-terraform
+
+.PHONY: install-terraform
+install-terraform:
+	if [ ! -f /usr/local/bin/terraform ]; then cd /tmp && wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip && cd /tmp && unzip terraform_0.12.29_linux_amd64.zip && mv /tmp/terraform /usr/local/bin && rm terraform_0.12.29_linux_amd64.zip; fi;
+
+.PHONY: install-aws
+install-aws:
+	if [ ! -f /usr/local/bin/aws ]; then cd /tmp && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install && rm -rf ./aws/ awscliv2.zip; fi;
+
+.PHONY: install-packer
+install-packer:
+	if [ ! -f /usr/bin/packer ]; then sudo apt install packer; fi;
 
 .PHONY: validate
 validate:
