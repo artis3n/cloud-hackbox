@@ -20,7 +20,7 @@ install-aws:
 
 .PHONY: install-packer
 install-packer:
-	if [ ! -f /usr/bin/packer ]; then sudo apt install packer; fi;
+	if [ ! -f /usr/bin/packer ]; then sudo apt-get update && sudo apt-get install -y packer; fi;
 
 .PHONY: validate
 validate:
