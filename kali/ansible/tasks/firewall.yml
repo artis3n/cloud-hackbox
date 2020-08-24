@@ -1,13 +1,13 @@
 ---
 
-- name: Configure UFW
+- name: Firewall | Configure UFW
   ufw:
     rule: "{{ item.rule }}"
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
   loop: "{{ ufw_rules }}"
 
-- name: Set UFW Defaults
+- name: Firewall | Set UFW Defaults
   ufw:
     direction: "{{ item.direction }}"
     default: "{{ item.default }}"
@@ -15,12 +15,12 @@
     - { direction: incoming, default: deny }
     - { direction: outgoing, default: allow }
 
-- name: Enable UFW
+- name: Firewall | Enable UFW
   ufw:
     state: enabled
     logging: '{{ ufw_log_level }}'
 
-- name: Configure UFW logrotate
+- name: Firewall | Configure UFW logrotate
   template:
     src: files/logs/ufw.j2
     dest: /etc/logrotate.d/ufw

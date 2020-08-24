@@ -3,70 +3,33 @@
 # Most of these packages exist in the base AMI, but not in the Molecule Docker image
 # Just include them for both, it's idempotent
 apt_packages:
-  - awscli
-  - binwalk
-  - build-essential
-  - burpsuite
-  - cifs-utils
-  - curl
-  - dnsutils
+  # All the default Kali tools
+  - kali-linux-default
+  # Everything below this should be in alphabetical order
   - dotdotpwn
-  - enum4linux
   - exiftool
-  - exploitdb
-  - file
-  - git
   - gobuster
   - gdb
-  - gzip
-  - hydra
-  - impacket-scripts
-  - john
   - kali-desktop-xfce
   - less
-  - libguestfs-tools
+  # - libguestfs-tools # temporarily removed from kali-rolling on 2020-08-24
   - locate
-  - logrotate
-  - lsof
   - magic-wormhole
-  - man-db
-  - metasploit-framework
-  - netcat
-  - nbtscan
-  - nikto
-  - nmap
   - oscanner
-  - patator
-  - postgresql
   - proxychains4
-  - python
-  - python3
-  - python3-impacket
-  - python3-pexpect
+  - python-pip
   - python3-pip
-  - p7zip
   - ruby-full
-  - samba
   - seclists
-  - smbclient
-  - smbmap
   - smtp-user-enum
   - software-properties-common
-  - socat
   - ssh-client
-  - sslyze
-  - sqlmap
   - tigervnc-common
   - tigervnc-standalone-server
   - tigervnc-xorg-extension
   - tnscmd10g
   - ufw
-  - vim
   - wget
-  - whatweb
-  - whois
-  - xz-utils
-  - zip
 
 prepare_apt_packages:
   - aptitude

@@ -1,15 +1,15 @@
 ---
-- name: Ensure sysconfig directory
+- name: VNC | Ensure sysconfig directory
   file:
     path: /etc/sysconfig
     state: directory
 
-- name: Set preferred display manager
+- name: VNC | Set preferred display manager
   copy:
     content: "PREFERRED=/usr/bin/xcfe4-session"
     dest: /etc/sysconfig/desktop
 
-- name: Set VNC password
+- name: VNC | Set VNC password
   become: yes
   become_user: kali
   expect:
@@ -21,31 +21,31 @@
     creates: /home/kali/.vnc/passwd
     timeout: 30
 
-- name: Copy Xserver script
+- name: VNC | Copy Xserver script
   copy:
     src: files/vnc/Xvnc-session.sh
     dest: /etc/X11/Xvnc-session
     mode: '0755'
 
-- name: Copy xstartup script
+- name: VNC | Copy xstartup script
   copy:
     src: files/vnc/xstartup.sh
     dest: /home/kali/.vnc/xstartup
     mode: '0755'
 
-- name: Copy systemd target
+- name: VNC | Copy systemd target
   copy:
     src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
   register: vnc_systemd
 
-- name: Reload systemd
+- name: VNC | Reload systemd
   systemd:
     daemon-reload: yes
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-- name: Start vncserver
+- name: VNC | Start vncserver
   service:
     state: started
     name: vncserver@1.service
