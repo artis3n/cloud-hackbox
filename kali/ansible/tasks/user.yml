@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure Kali user is configured correctly
+- name: System | Ensure Kali user is configured correctly
   user:
     name: kali
     password: "{{ kali_user_pass | password_hash('sha512', 'thepasswordisinthevariablesfile') }}"

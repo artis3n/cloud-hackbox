@@ -1,30 +1,18 @@
 ---
 
-- name: Update and Prune Packages
+- name: Packages | Update and Prune
   apt:
     update_cache: yes
     upgrade: 'yes'
     autoremove: yes
     autoclean: yes
 
-- name: Install Packages - will take a long time
+- name: Packages | Install - will take a long time
   package:
     name: "{{ apt_packages }}"
     state: present
 
-# Apparently python-pip doesn't exist on Kali anymore, so get legacy pip installed
-# for outdated tools not yet on python 3
-- name: Legacy pip for legacy tools - download
-  get_url:
-    url: https://bootstrap.pypa.io/get-pip.py
-    dest: /tmp/get-pip.py
-
-- name: Legacy pip for legacy tools - install
-  command: /usr/bin/python /tmp/get-pip.py
-  args:
-    creates: /usr/local/bin/pip
-
-- name: Update Gems
+- name: Packages | Update Gems
   shell: gem update --no-document && touch ~/.ansible-gems-updated
   args:
     creates: ~/.ansible-gems-updated
