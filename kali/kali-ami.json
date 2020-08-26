@@ -56,8 +56,6 @@
             "playbook_file": "kali/ansible/playbook.yml",
             "user": "kali",
             "host_alias": "kali",
-            "galaxy_file": "requirements.yml",
-            "galaxy_command": "ansible-galaxy collection",
             "extra_arguments": [
                 "-e",
                 "ansible_python_interpreter=/usr/bin/python3"

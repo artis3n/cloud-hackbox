@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
   options:
-    requirements-file: requirements.yml
+    requirements-file: ../../requirements.yml
 driver:
   name: docker
 lint: |
@@ -28,6 +28,7 @@ scenario:
     - lint
     - destroy
     - syntax
+    - dependency
     - create
     - prepare
     - converge

@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install --dev
-          pipenv run ansible-galaxy collection install -r requirements.yml
+          pipenv run ansible-galaxy collection install -r kali/ansible/requirements.yml
 
       - name: Test
         run: |
