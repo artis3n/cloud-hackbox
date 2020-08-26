@@ -1,16 +1,20 @@
 ---
 
-- name: Packages | Update and Prune
+- name: Packages | Update
   apt:
     update_cache: yes
     upgrade: 'yes'
-    autoremove: yes
-    autoclean: yes
 
 - name: Packages | Install - will take a long time
   package:
     name: "{{ apt_packages }}"
+    update_cache: yes
     state: present
+
+- name: Packages | Prune
+  apt:
+    autoremove: yes
+    autoclean: yes
 
 - name: Packages | Update Gems
   shell: gem update --no-document && touch ~/.ansible-gems-updated

@@ -30,6 +30,7 @@ apt_packages:
   - tnscmd10g
   - ufw
   - wget
+  - xz-utils
 
 prepare_apt_packages:
   - aptitude

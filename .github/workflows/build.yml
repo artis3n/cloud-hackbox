@@ -22,6 +22,7 @@ jobs:
         run: |
           make install-base
           pip install ansible
+          ansible-galaxy collection install -r requirements.yml
 
       - name: Packer build
         run: packer build kali/kali-ami.json
