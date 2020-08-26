@@ -21,6 +21,10 @@ provisioner:
   name: ansible
   playbooks:
     converge: ../../playbook.yml
+  inventory:
+    host_vars:
+      instance:
+        ansible_user: root
 verifier:
   name: ansible
 scenario:
