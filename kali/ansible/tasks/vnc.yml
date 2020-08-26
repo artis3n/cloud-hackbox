@@ -8,6 +8,7 @@
   copy:
     content: "PREFERRED=/usr/bin/xcfe4-session"
     dest: /etc/sysconfig/desktop
+    mode: '666'
 
 - name: VNC | Set VNC password
   become: yes
@@ -37,6 +38,7 @@
   copy:
     src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
+    mode: '660'
   register: vnc_systemd
 
 - name: VNC | Reload systemd
