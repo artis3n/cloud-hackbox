@@ -6,7 +6,7 @@ all: install validate build
 .PHONY: install
 install: install-base install-aws
 	pipenv install --dev
-	pipenv run ansible-galaxy collection install -r requirements.yml
+	pipenv run ansible-galaxy collection install -r kali/ansible/requirements.yml
 
 .PHONY: install-base
 install-base: install-packer install-terraform
