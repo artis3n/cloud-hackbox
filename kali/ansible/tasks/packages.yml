@@ -11,7 +11,7 @@
     update_cache: yes
     state: present
 
-- name: Packages | Prune
+- name: Packages | Cleanup
   apt:
     autoremove: yes
     autoclean: yes

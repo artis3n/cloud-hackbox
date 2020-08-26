@@ -8,8 +8,8 @@
   copy:
     content: "PREFERRED=/usr/bin/xcfe4-session"
     dest: /etc/sysconfig/desktop
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: kali
+    group: kali
     mode: '666'
 
 - name: VNC | Set VNC password
@@ -40,8 +40,8 @@
   copy:
     src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: kali
+    group: kali
     mode: '660'
   register: vnc_systemd
 

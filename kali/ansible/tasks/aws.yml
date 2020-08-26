@@ -3,8 +3,8 @@
   get_url:
     url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
     dest: /tmp/awscliv2.zip
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: kali
+    group: kali
     mode: '660'
   register: awscli_archive
 
@@ -33,8 +33,8 @@
   get_url:
     url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
     dest: /tmp/amazon-ssm-agent.deb
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: kali
+    group: kali
     mode: '660'
 
 - name: AWS | Install SSM agent
