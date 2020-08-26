@@ -3,7 +3,9 @@
   get_url:
     url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
     dest: /tmp/awscliv2.zip
-    mode: '666'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '660'
   register: awscli_archive
 
 - name: AWS | Unarchive AWS CLI
@@ -31,7 +33,9 @@
   get_url:
     url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
     dest: /tmp/amazon-ssm-agent.deb
-    mode: '666'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '660'
 
 - name: AWS | Install SSM agent
   apt:
