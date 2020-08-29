@@ -3,6 +3,7 @@
   file:
     path: /etc/sysconfig
     state: directory
+    mode: '755'
 
 - name: VNC | Set preferred display manager
   copy:

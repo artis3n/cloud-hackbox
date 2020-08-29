@@ -13,6 +13,7 @@
     src: '{{ awscli_archive.dest }}'
     remote_src: yes
     dest: /tmp
+    mode: '660'
   register: new_awscli
 
 - name: AWS | Install AWS CLI
