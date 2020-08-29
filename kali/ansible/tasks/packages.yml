@@ -1,5 +1,11 @@
 ---
 
+- name: Packages | Use HTTPS
+  lineinfile:
+    path: /etc/apt/sources.list
+    regex: ^deb http:\/\/http\.kali\.org\/kali.*$
+    line: deb https://http.kali.org/kali kali-last-snapshot main contrib non-free
+
 - name: Packages | Update
   apt:
     update_cache: yes
@@ -8,7 +14,6 @@
 - name: Packages | Install - will take a long time
   package:
     name: "{{ apt_packages }}"
-    update_cache: yes
     state: present
 
 - name: Packages | Cleanup

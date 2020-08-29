@@ -25,6 +25,7 @@ provisioner:
     host_vars:
       instance:
         ansible_user: root
+        ansible_python_interpreter: /usr/bin/python3
 verifier:
   name: ansible
 scenario:

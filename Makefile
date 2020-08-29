@@ -29,7 +29,7 @@ validate:
 
 .PHONY: build
 build:
-	AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
+	AWS_PROFILE=$${AWS_PROFILE:-terraform} AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
 
 .PHONY: molecule
 molecule:
