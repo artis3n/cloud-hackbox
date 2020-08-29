@@ -6,7 +6,6 @@ apt_packages:
   # All the default Kali tools
   - kali-linux-default
   # Everything below this should be in alphabetical order
-  - docker.io
   - dotdotpwn
   - exiftool
   - gobuster

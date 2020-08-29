@@ -42,7 +42,7 @@
     dest: /etc/systemd/system/vncserver@.service
     owner: kali
     group: kali
-    mode: '660'
+    mode: '665'
   register: vnc_systemd
 
 - name: VNC | Reload systemd
@@ -57,4 +57,6 @@
     name: vncserver@1.service
     enabled: yes
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-  tags: notest
+  tags:
+    - notest
+    - skip
