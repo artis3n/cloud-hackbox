@@ -4,6 +4,9 @@
   gather_facts: yes
   become: yes
 
+  collections:
+    - artis3n.github
+
   vars_files:
     - ./variables.yml
 

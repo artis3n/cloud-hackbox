@@ -3,11 +3,15 @@
   file:
     path: /etc/sysconfig
     state: directory
+    mode: '755'
 
 - name: VNC | Set preferred display manager
   copy:
     content: "PREFERRED=/usr/bin/xcfe4-session"
     dest: /etc/sysconfig/desktop
+    owner: kali
+    group: kali
+    mode: '666'
 
 - name: VNC | Set VNC password
   become: yes
@@ -37,6 +41,9 @@
   copy:
     src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
+    owner: kali
+    group: kali
+    mode: '665'
   register: vnc_systemd
 
 - name: VNC | Reload systemd
@@ -51,4 +58,6 @@
     name: vncserver@1.service
     enabled: yes
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-  tags: notest
+  tags:
+    - notest
+    - skip

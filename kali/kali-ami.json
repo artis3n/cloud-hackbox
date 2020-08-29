@@ -28,6 +28,7 @@
             },
             "instance_type": "{{user `instance_type`}}",
             "ssh_username": "kali",
+            "ssh_interface": "public_ip",
             "ami_name": "{{user `ami_name`}}",
             "launch_block_device_mappings": [
                 {
@@ -36,6 +37,7 @@
                     "delete_on_termination": true
                 }
             ],
+            "spot_price": "auto",
             "tags": {
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
                 "Base_AMI": "{{ .SourceAMI }}"
@@ -48,15 +50,19 @@
             "inline": [
                 "sleep 10",
                 "sudo apt-get update",
-                "sudo apt-get install -y python3 python3-apt aptitude"
+                "sudo apt-get install -y python3 python3-apt"
             ]
         },
         {
             "type": "ansible",
             "playbook_file": "kali/ansible/playbook.yml",
+            "user": "kali",
+            "host_alias": "kali",
             "extra_arguments": [
                 "-e",
-                "ansible_python_interpreter=/usr/bin/python3"
+                "ansible_python_interpreter=/usr/bin/python3",
+                "--skip-tags",
+                "skip"
             ]
         },
         {

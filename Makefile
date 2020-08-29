@@ -5,14 +5,15 @@ all: install validate build
 
 .PHONY: install
 install: install-base install-aws
-	pipenv install
+	pipenv install --dev
+	pipenv run ansible-galaxy collection install -r kali/ansible/requirements.yml
 
 .PHONY: install-base
 install-base: install-packer install-terraform
 
 .PHONY: install-terraform
 install-terraform:
-	if [ ! -f /usr/local/bin/terraform ]; then cd /tmp && wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip && cd /tmp && unzip terraform_0.12.29_linux_amd64.zip && mv /tmp/terraform /usr/local/bin && rm terraform_0.12.29_linux_amd64.zip; fi;
+	if [ ! -f /usr/local/bin/terraform ]; then cd /tmp && wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip && cd /tmp && unzip terraform_0.13.0_linux_amd64.zip && mv /tmp/terraform /usr/local/bin && rm terraform_0.13.0_linux_amd64.zip; fi;
 
 .PHONY: install-aws
 install-aws:
@@ -28,7 +29,7 @@ validate:
 
 .PHONY: build
 build:
-	AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
+	AWS_PROFILE=$${AWS_PROFILE:-terraform} AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
 
 .PHONY: molecule
 molecule:

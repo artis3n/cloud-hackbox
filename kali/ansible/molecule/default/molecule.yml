@@ -1,6 +1,9 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: requirements.yml
+    requirements-file: requirements.yml
 driver:
   name: docker
 lint: |
@@ -18,6 +21,11 @@ provisioner:
   name: ansible
   playbooks:
     converge: ../../playbook.yml
+  inventory:
+    host_vars:
+      instance:
+        ansible_user: root
+        ansible_python_interpreter: /usr/bin/python3
 verifier:
   name: ansible
 scenario:
@@ -26,6 +34,7 @@ scenario:
     - lint
     - destroy
     - syntax
+    - dependency
     - create
     - prepare
     - converge
