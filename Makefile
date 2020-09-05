@@ -53,7 +53,7 @@ plan:
 .PHONY: provision
 provision:
 	cd kali/terraform && terraform init && terraform validate && terraform apply | tee /tmp/cloud-hackbox-kali-log
-	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali-log | grep "kali_id" | awk '{ print $$3 }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali-log | grep "kali_ip" | awk '{ print $$3 }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m to be available...\e[0m" && aws ec2 wait instance-running --instance-ids $$INSTANCE_ID && echo " \e[32mDone\e[0m"
+	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali-log | grep "kali_id" | awk '{ print $$3 }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali-log | grep "kali_ip" | awk '{ print $$3 }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m to be available...\e[0m" && AWS_PROFILE=$${AWS_PROFILE:-terraform} aws --region us-east-1 ec2 wait instance-running --instance-ids $$INSTANCE_ID && echo " \e[32mDone\e[0m"
 
 .PHONY: destroy
 destroy:
