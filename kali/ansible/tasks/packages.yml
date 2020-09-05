@@ -1,10 +1,10 @@
 ---
 
 - name: Packages | Use HTTPS
-  lineinfile:
-    path: /etc/apt/sources.list
-    regex: ^deb http:\/\/http\.kali\.org\/kali.*$
-    line: deb https://http.kali.org/kali kali-last-snapshot main contrib non-free
+  copy:
+    src: files/apt/sources.list
+    dest: /etc/apt/sources.list
+    mode: '644'
 
 - name: Packages | Update
   apt:

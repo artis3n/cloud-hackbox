@@ -1,0 +1,3 @@
+deb https://kali.download/kali kali-rolling main contrib non-free
+deb-src https://kali.download/kali kali-rolling main contrib non-free
+deb https://http.kali.org/kali kali-last-snapshot main contrib non-free
