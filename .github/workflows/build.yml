@@ -21,6 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           make install-base
+          pip install wheel
           pip install ansible
           ansible-galaxy collection install -r kali/ansible/requirements.yml
 
