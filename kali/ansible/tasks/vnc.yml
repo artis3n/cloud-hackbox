@@ -52,14 +52,12 @@
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-# Can't start VNC until the user data script has run
-#
-# - name: VNC | Start vncserver
-#   service:
-#     state: started
-#     name: vncserver@1.service
-#     enabled: yes
-#   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
-#   tags:
-#     - notest
-#     - skip
+- name: VNC | Start vncserver
+  service:
+    state: stopped
+    name: vncserver@1.service
+    enabled: yes
+  # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
+  tags:
+    - notest
+    - skip
