@@ -24,6 +24,11 @@ Additional desired hackboxes:
 ```bash
 pip install pipenv
 # Install Packer, Terraform and AWS CLI as per their documentation
+# Optionally,
+make install-base
+make install-aws
+
+# Then
 make install
 
 # If you want to run Molecule tests

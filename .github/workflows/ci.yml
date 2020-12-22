@@ -9,12 +9,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
 
-      - uses: actions/cache@v2
+      - name: Use Cache
+        uses: actions/cache@v2
         with:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}
