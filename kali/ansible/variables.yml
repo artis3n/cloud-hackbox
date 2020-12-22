@@ -8,6 +8,7 @@ apt_packages:
   # Graphical desktop
   - kali-desktop-xfce
   # Everything below this should be in alphabetical order
+  - dbus-x11
   - dotdotpwn
   - gettext
   - gobuster

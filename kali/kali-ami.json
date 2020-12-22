@@ -40,7 +40,6 @@
                     "kms_key_id": "{{ user `kms_key_id_or_alias` }}"
                 }
             ],
-            "spot_price": "auto",
             "tags": {
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
                 "Base_AMI": "{{ .SourceAMI }}"

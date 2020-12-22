@@ -46,7 +46,7 @@ Packer file: `kali/kali-ami.json`
 Builds a Kali Linux AMI with the following:
 
 - Updates all packages on the system
-- Installs and configures a number of frequently used packages
+- Installs and configures a number of frequently used packages (`kali-linux-default` plus some others)
   - See the [full list](kali/ansible/variables.yml).
 
 This AMI also pre-configures [UFW](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04).
@@ -69,6 +69,8 @@ Ensure your AWS Security Group allows incoming traffic on the ports you use for 
 To connect to the VNC server, you must run a SSH local port forward to the remote `5901` port.
 
 `tcp/5432` is blocked as the Postgres database should not be exposed beyond localhost.
+
+You can add additional ports as you desire with `ufw allow <num>`, however you will also need to update the security group for your instance or modify the Terraform to accomplish the same.
 
 #### Usage
 
