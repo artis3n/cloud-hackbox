@@ -23,7 +23,7 @@ Additional desired hackboxes:
 
 ```bash
 pip install pipenv
-# Installs Terraform, Packer, and Pipenv dependencies (e.g. Ansible)
+# Install Packer, Terraform and AWS CLI as per their documentation
 make install
 
 # If you want to run Molecule tests
@@ -81,7 +81,8 @@ pipenv run packer build \
   -var ami_name="custom-ami-name" \
   -var kali_distro_version="2020" \
   -var aws_region="us-east-1" \
-  -var instance_type="t2.medium" \
+  -var instance_type="t3.medium" \
+  -var kms_key_id_or_alias="alias/aws/ebs" \
   kali/kali-ami.json
 ```
 
@@ -95,7 +96,7 @@ You will need to customize the Terraform Cloud state backend [here](kali/terrafo
 
 Details about the Terraform provision and optional variables to customize can be found in [the README](kali/terraform/README.md) in `kali/terraform`.
 
-When you no longer need the infrastructure, clean it up with
+When you no longer need the infrastructure, clean it up with:
 
 ```bash
 make destroy
@@ -132,18 +133,23 @@ The default is `2020`.
 **`disk_size`**
 
 The AMI's default EBS volume size in GB and the size to use when generating the AMI.
-The default (and mininum) is `25`.
+The default is `25`. The minimum required by the root AMI is `12`, but this is unlikely to be sufficient for the full set of Kali tools and the GUI added to the system.
 
 **`instance_type`**
 
 The instance type to use when generating the AMI.
-The default is `t2.medium`.
-Must be one of the instance types supported by the base [Kali Linux AMI](https://aws.amazon.com/marketplace/pp/B01M26MMTT).
+The default is `t3.medium`.
+Must be one of the instance types supported by the base [Kali Linux AMI](https://aws.amazon.com/marketplace/pp/B08LL91KKB).
 
 **`aws_region`**
 
 The AWS region into which to create the AMI.
 Default is `us-east-1`.
+
+**`kms_key_id_or_alias`**
+
+By default, the generated AMI is encrypted with the Amazon-managed `aws/ebs` KMS key.
+You can instead provide a custom KMS key, either by key ID or by alias.
 
 ### Parrot OS AMI
 
