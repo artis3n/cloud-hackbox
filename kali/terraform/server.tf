@@ -1,11 +1,8 @@
-resource "aws_spot_instance_request" "kali" {
+resource "aws_instance" "kali" {
   ami           = data.aws_ami.kali.id
-  spot_type     = var.kali_spot_type
   instance_type = var.kali_instance_type
   key_name      = aws_key_pair.kali.id
   subnet_id     = data.aws_subnet.default_vpc_subnet.id
-
-  wait_for_fulfillment = true
 
   security_groups = [
     aws_security_group.ssh.id,

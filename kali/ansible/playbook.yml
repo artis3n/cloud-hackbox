@@ -16,6 +16,7 @@
     - name: Role | Docker
       import_role:
         name: artis3n.docker
+      tags: molecule-notest
     - import_tasks: tasks/pentest.yml
     - import_tasks: tasks/aws.yml
     - import_tasks: tasks/vnc.yml

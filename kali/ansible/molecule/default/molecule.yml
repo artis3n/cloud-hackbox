@@ -14,8 +14,6 @@ platforms:
   - name: instance
     # Tracks the latest official release, so should be the closest available image to the Kali Linux marketplace AMI
     image: kalilinux/kali
-    # So docker can start up inside the container... :(
-    privileged: true
     # For UFW tasks
     capabilities:
       - NET_ADMIN

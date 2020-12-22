@@ -37,9 +37,18 @@
     dest: /home/kali/.vnc/xstartup
     mode: '0755'
 
+- name: VNC | Retrieve fully qualified hostname
+  command: hostname -f
+  register: hostname
+  changed_when: false
+
+- name: VNC | Set FQDN variable
+  set_fact:
+    hostname_fqdn: "{{ hostname.stdout }}"
+
 - name: VNC | Copy systemd target
-  copy:
-    src: files/vnc/vncserver@.service
+  template:
+    src: files/vnc/vncserver@.service.j2
     dest: /etc/systemd/system/vncserver@.service
     owner: kali
     group: kali
