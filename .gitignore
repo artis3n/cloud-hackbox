@@ -1,4 +1,5 @@
 packer_cache
 terraform.tfstate.d
+.terraform.lock.hcl
 .terraform
 kali/terraform/input.tfvars
