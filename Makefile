@@ -38,6 +38,7 @@ molecule:
 
 .PHONY: lint
 lint: lint-ans lint-tf
+	pipenv run packer validate kali/kali-ami.json
 
 .PHONY: lint-ans
 lint-ans:

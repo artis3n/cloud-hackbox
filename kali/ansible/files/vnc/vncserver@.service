@@ -1,6 +1,6 @@
 [Unit]
 Description=Start TigerVNC server at startup
-After=syslog.target network.target
+After=syslog.target network.target cloud-final.service
 
 [Service]
 Type=forking
@@ -8,10 +8,10 @@ User=kali
 Group=kali
 WorkingDirectory=/home/kali
 
-PIDFile=/home/kali/.vnc/{{ hostname_fqdn }}:%i.pid
+PIDFile=/home/kali/.vnc/%%SET_FQDN_HOSTNAME%%:%i.pid
 ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
 ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 :%i
 ExecStop=/usr/bin/vncserver -kill :%i
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=cloud-init.target

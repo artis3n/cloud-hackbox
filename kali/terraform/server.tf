@@ -4,6 +4,8 @@ resource "aws_instance" "kali" {
   key_name      = aws_key_pair.kali.id
   subnet_id     = data.aws_subnet.default_vpc_subnet.id
 
+  user_data = file("${path.module}/userdata.sh")
+
   security_groups = [
     aws_security_group.ssh.id,
     aws_security_group.kali_defaults.id,
