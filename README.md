@@ -2,8 +2,8 @@
 
 A repository to build and provision custom pentest resources in AWS.
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artis3n/cloud-hackbox/CI?label=Tests)](https://github.com/artis3n/cloud-hackbox/actions)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artis3n/cloud-hackbox/Build?label=Packer%20Build)](https://github.com/artis3n/cloud-hackbox/actions)
+![CI](https://github.com/artis3n/cloud-hackbox/workflows/CI/badge.svg)
+![Build](https://github.com/artis3n/cloud-hackbox/workflows/Build/badge.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/artis3n/cloud-hackbox)
 ![GitHub](https://img.shields.io/github/license/artis3n/cloud-hackbox)
 [![GitHub followers](https://img.shields.io/github/followers/artis3n?style=social)](https://github.com/artis3n/)
