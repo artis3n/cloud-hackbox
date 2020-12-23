@@ -42,9 +42,7 @@ export AWS_SECRET_ACCESS_KEY=...
 
 Then choose a hackbox and follow the instructions to build and provision it.
 
-## Hackboxes
-
-### Kali Linux AMI
+## Kali Linux AMI
 
 Packer file: `kali/kali-ami.json`
 
@@ -77,7 +75,10 @@ To connect to the VNC server, you must run a SSH local port forward to the remot
 
 You can add additional ports as you desire with `ufw allow <num>`, however you will also need to update the security group for your instance or modify the Terraform to accomplish the same.
 
-#### Usage
+### Usage
+
+You have to first subscribe to the Kali Linux marketplace AMI by navigating to <https://aws.amazon.com/marketplace/pp/B08LL91KKB> and selecting "Continue to Subscribe."
+Once this is completed once, your account has access to the marketplace AMI and can follow the instructions below.
 
 ```bash
 make validate  # pipenv run packer validate
@@ -112,18 +113,15 @@ make destroy
 Start VNC and connect to the server graphically:
 
 ```bash
-# On host
 ssh -i <private-key.pem> -L 5901:localhost:5901 kali@<instance ip>
-# On EC2
-> vnc-start
 ```
 Then, start a VNC client like [Remmina](https://remmina.org/how-to-install-remmina/) and use the server address `localhost:1`.
 Enter the VNC password `goodhacks`.
 The quality/speed isn't amazing, but it suffices for occasional graphical usage.
 
-##### Packer Variables
+#### Packer Variables
 
-###### Environment variables
+##### Environment variables
 
 **`AWS_ACCESS_KEY_ID`**
 
@@ -137,7 +135,7 @@ Environment variable for your AWS secret access key.
 This can be left unset if you have sufficiently privileged default credentials in `~/.aws/credentials`.
 Otherwise **required**.
 
-###### Command-line variables
+##### Command-line variables
 
 **`ami_name`**
 
@@ -146,7 +144,7 @@ The default is `packer-kali-linux-{{timestamp}}`.
 
 **`kali_distro_version`**
 
-The version of the [Kali Linux Marketplace AMI](https://aws.amazon.com/marketplace/pp/B01M26MMTT) to build from.
+The version of the [Kali Linux Marketplace AMI](https://aws.amazon.com/marketplace/pp/B08LL91KKB) to build from.
 The default is `2020`.
 
 **`disk_size`**
@@ -187,7 +185,7 @@ Default is `us-east-1`.
 By default, the generated AMI is encrypted with the Amazon-managed `aws/ebs` KMS key.
 You can instead provide a custom KMS key, either by key ID or by alias.
 
-### Parrot OS AMI
+## Parrot OS AMI
 
 Packer file: `parrot-ova.json`
 
