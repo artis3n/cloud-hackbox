@@ -9,6 +9,21 @@ install:
 	pipenv run ansible-galaxy role install --force-with-deps --role-file kali/ansible/requirements.yml
 	pipenv run ansible-galaxy collection install --force-with-deps --requirements-file kali/ansible/requirements.yml
 
+.PHONY: install-base
+install-base: install-packer install-terraform
+
+.PHONY: install-terraform
+install-terraform:
+	if [ ! -f /usr/local/bin/terraform ]; then cd /tmp && wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip && cd /tmp && unzip terraform_0.13.0_linux_amd64.zip && mv /tmp/terraform /usr/local/bin && rm terraform_0.13.0_linux_amd64.zip; fi;
+
+.PHONY: install-aws
+install-aws:
+	if [ ! -f /usr/local/bin/aws ]; then cd /tmp && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install && rm -rf ./aws/ awscliv2.zip; fi;
+
+.PHONY: install-packer
+install-packer:
+	if [ ! -f /usr/bin/packer ]; then sudo apt-get update && sudo apt-get install -y packer; fi;
+
 .PHONY: validate
 validate:
 	pipenv run packer validate kali/kali-ami.json
@@ -23,6 +38,7 @@ molecule:
 
 .PHONY: lint
 lint: lint-ans lint-tf
+	pipenv run packer validate kali/kali-ami.json
 
 .PHONY: lint-ans
 lint-ans:
@@ -39,7 +55,7 @@ plan:
 .PHONY: provision
 provision:
 	cd kali/terraform && terraform init && terraform validate && terraform apply | tee /tmp/cloud-hackbox-kali.log
-	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_id" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_ip" | awk 'FNR==2{ print substr($$3, 2, length($$3)-6) }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m to be available...\e[0m" && AWS_PROFILE=$${AWS_PROFILE:-terraform} aws --region us-east-1 ec2 wait instance-running --instance-ids $$INSTANCE_ID && echo " \e[32mDone\e[0m"
+	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_id" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_ip" | awk 'FNR==2{ print substr($$3, 2, length($$3)-6) }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m to be available...\e[0m" && AWS_PROFILE=$${AWS_PROFILE:-terraform} aws --region us-east-1 ec2 wait instance-status-ok --instance-ids $$INSTANCE_ID && echo " \e[32mDone\e[0m"
 
 .PHONY: destroy
 destroy:

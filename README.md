@@ -24,6 +24,11 @@ Additional desired hackboxes:
 ```bash
 pip install pipenv
 # Install Packer, Terraform and AWS CLI as per their documentation
+# Optionally,
+make install-base
+make install-aws
+
+# Then
 make install
 
 # If you want to run Molecule tests
@@ -76,7 +81,7 @@ You can add additional ports as you desire with `ufw allow <num>`, however you w
 
 ```bash
 make validate  # pipenv run packer validate
-make build  # pipenv run packer build
+make build  # pipenv run packer build. Will take 30-50 minutes to finish AMI creation.
 
 # If you want to customize the AMI creation:
 pipenv run packer build \
@@ -103,6 +108,18 @@ When you no longer need the infrastructure, clean it up with:
 ```bash
 make destroy
 ```
+
+Start VNC and connect to the server graphically:
+
+```bash
+# On host
+ssh -i <private-key.pem> -L 5901:localhost:5901 kali@<instance ip>
+# On EC2
+> vnc-start
+```
+Then, start a VNC client like [Remmina](https://remmina.org/how-to-install-remmina/) and use the server address `localhost:1`.
+Enter the VNC password `goodhacks`.
+The quality/speed isn't amazing, but it suffices for occasional graphical usage.
 
 ##### Packer Variables
 
@@ -135,7 +152,24 @@ The default is `2020`.
 **`disk_size`**
 
 The AMI's default EBS volume size in GB and the size to use when generating the AMI.
-The default is `25`. The minimum required by the root AMI is `12`, but this is unlikely to be sufficient for the full set of Kali tools and the GUI added to the system.
+The default is `25`.
+The minimum required by the root AMI is `12`, but this is unlikely to be sufficient for the full set of Kali tools and the GUI added to the system.
+See the below output of `df` on this custom AMI post-creation.
+
+```bash
+└─$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.0G     0  2.0G   0% /dev
+tmpfs           394M  1.0M  393M   1% /run
+/dev/xvda1       25G   15G  8.5G  64% /
+tmpfs           2.0G     0  2.0G   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           4.0M     0  4.0M   0% /sys/fs/cgroup
+/dev/xvda15     124M  262K  124M   1% /boot/efi
+tmpfs           394M   52K  394M   1% /run/user/0
+tmpfs           394M   56K  394M   1% /run/user/130
+tmpfs           394M   52K  394M   1% /run/user/1000
+```
 
 **`instance_type`**
 

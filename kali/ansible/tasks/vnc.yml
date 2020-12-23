@@ -37,18 +37,9 @@
     dest: /home/kali/.vnc/xstartup
     mode: '0755'
 
-- name: VNC | Retrieve fully qualified hostname
-  command: hostname -f
-  register: hostname
-  changed_when: false
-
-- name: VNC | Set FQDN variable
-  set_fact:
-    hostname_fqdn: "{{ hostname.stdout }}"
-
 - name: VNC | Copy systemd target
-  template:
-    src: files/vnc/vncserver@.service.j2
+  copy:
+    src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
     owner: kali
     group: kali
@@ -61,12 +52,22 @@
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-- name: VNC | Start vncserver
+- name: VNC | Enable vncserver
   service:
-    state: started
+    state: stopped
     name: vncserver@1.service
     enabled: yes
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
   tags:
-    - notest
-    - skip
+    - molecule-notest
+
+- name: VNC | Create Executables
+  lineinfile:
+    path: /home/kali/.zshrc
+    regexp: '^alias {{ item.alias }}='
+    line: 'alias {{ item.alias }}="{{ item.command }}"'
+    state: present
+  loop:
+    - { alias: vnc-start, command: 'sudo systemctl start vncserver@1.service' }
+    - { alias: vnc-stop, command: 'sudo systemctl stop vncserver@1.service' }
+    - { alias: vnc-status, command: 'sudo systemctl status vncserver@1.service' }
