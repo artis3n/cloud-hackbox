@@ -59,5 +59,14 @@
     enabled: yes
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
   tags:
-    - notest
-    - skip
+    - molecule-notest
+
+- name: VNC | Create Executables
+  lineinfile:
+    path: /home/kali/.zshrc
+    regexp: '^alias {{ item.alias }}='
+    line: 'alias {{ item.alias }}="{{ item.command }}"'
+    state: present
+  loop:
+    - { alias: vnc-start, command: 'sudo systemctl start vncserver@1.service' }
+    - { alias: vnc-stop, command: 'sudo systemctl stop vncserver@1.service' }
