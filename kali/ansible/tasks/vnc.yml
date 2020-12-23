@@ -52,7 +52,7 @@
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
-- name: VNC | Start vncserver
+- name: VNC | Enable vncserver
   service:
     state: stopped
     name: vncserver@1.service
@@ -70,3 +70,4 @@
   loop:
     - { alias: vnc-start, command: 'sudo systemctl start vncserver@1.service' }
     - { alias: vnc-stop, command: 'sudo systemctl stop vncserver@1.service' }
+    - { alias: vnc-status, command: 'sudo systemctl status vncserver@1.service' }
