@@ -11,16 +11,23 @@
     - ./variables.yml
 
   tasks:
-    - import_tasks: tasks/packages.yml
-    - import_tasks: tasks/user.yml
+    - name: Packages
+      ansible.builtin.import_tasks: tasks/packages.yml
+    - name: User
+      ansible.builtin.import_tasks: tasks/user.yml
     - name: Role | Docker
-      import_role:
+      ansible.builtin.import_role:
         name: artis3n.docker
       tags: molecule-notest
-    - import_tasks: tasks/pentest.yml
-    - import_tasks: tasks/aws.yml
-    - import_tasks: tasks/vnc.yml
-    - import_tasks: tasks/firewall.yml
+    - name: Pentest
+      ansible.builtin.import_tasks: tasks/pentest.yml
+    - name: AWS
+      ansible.builtin.import_tasks: tasks/aws.yml
+    - name: VNC
+      ansible.builtin.import_tasks: tasks/vnc.yml
+    - name: Firewall
+      ansible.builtin.import_tasks: tasks/firewall.yml
 
   handlers:
-    - import_tasks: handlers/main.yml
+    - name: Handlers
+      ansible.builtin.import_tasks: handlers/main.yml

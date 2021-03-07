@@ -1,6 +1,6 @@
 ---
 - name: AWS | Download AWS CLI
-  get_url:
+  ansible.builtin.get_url:
     url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
     dest: /tmp/awscliv2.zip
     owner: kali
@@ -9,7 +9,7 @@
   register: awscli_archive
 
 - name: AWS | Unarchive AWS CLI
-  unarchive:
+  ansible.builtin.unarchive:
     src: '{{ awscli_archive.dest }}'
     remote_src: yes
     dest: /tmp
@@ -18,20 +18,20 @@
 
 - name: AWS | Install AWS CLI
   become: yes
-  command: sh ./aws/install
+  ansible.builtin.command: sh ./aws/install
   args:
     chdir: /tmp
     creates: /usr/local/bin/aws
 
 - name: AWS | Update AWS CLI
   become: yes
-  command: sh ./aws/install --update
+  ansible.builtin.command: sh ./aws/install --update
   args:
     chdir: /tmp
   when: new_awscli.changed  # noqa 503
 
 - name: AWS | Download SSM agent
-  get_url:
+  ansible.builtin.get_url:
     url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
     dest: /tmp/amazon-ssm-agent.deb
     owner: kali
@@ -39,11 +39,11 @@
     mode: '660'
 
 - name: AWS | Install SSM agent
-  apt:
+  ansible.builtin.apt:
     deb: /tmp/amazon-ssm-agent.deb
 
 - name: AWS | Start SSM agent
-  systemd:
+  ansible.builtin.systemd:
     name: amazon-ssm-agent
     state: started
     enabled: yes

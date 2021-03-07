@@ -1,12 +1,12 @@
 ---
 - name: VNC | Ensure sysconfig directory
-  file:
+  ansible.builtin.file:
     path: /etc/sysconfig
     state: directory
     mode: '755'
 
 - name: VNC | Set preferred display manager
-  copy:
+  ansible.builtin.copy:
     content: "PREFERRED=/usr/bin/xcfe4-session"
     dest: /etc/sysconfig/desktop
     owner: kali
@@ -16,7 +16,7 @@
 - name: VNC | Set VNC password
   become: yes
   become_user: kali
-  expect:
+  ansible.builtin.expect:
     command: vncpasswd
     responses:
       Password:: "{{ vnc_pass }}\r"
@@ -26,19 +26,19 @@
     timeout: 30
 
 - name: VNC | Copy Xserver script
-  copy:
+  ansible.builtin.copy:
     src: files/vnc/Xvnc-session.sh
     dest: /etc/X11/Xvnc-session
     mode: '0755'
 
 - name: VNC | Copy xstartup script
-  copy:
+  ansible.builtin.copy:
     src: files/vnc/xstartup.sh
     dest: /home/kali/.vnc/xstartup
     mode: '0755'
 
 - name: VNC | Copy systemd target
-  copy:
+  ansible.builtin.copy:
     src: files/vnc/vncserver@.service
     dest: /etc/systemd/system/vncserver@.service
     owner: kali
@@ -47,13 +47,13 @@
   register: vnc_systemd
 
 - name: VNC | Reload systemd
-  systemd:
+  ansible.builtin.systemd:
     daemon-reload: yes
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
 - name: VNC | Enable vncserver
-  service:
+  ansible.builtin.service:
     state: stopped
     name: vncserver@1.service
     enabled: yes
@@ -62,7 +62,7 @@
     - molecule-notest
 
 - name: VNC | Create Executables
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /home/kali/.zshrc
     regexp: '^alias {{ item.alias }}='
     line: 'alias {{ item.alias }}="{{ item.command }}"'

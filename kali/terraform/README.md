@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -17,7 +18,7 @@
 |------|-------------|------|---------|:--------:|
 | kali\_pubkey | The public key to a private key under your control. You will SSH onto the server using this keypair. | `string` | n/a | yes |
 | ebs\_kms\_key | KMS key alias to use for KMS key data source. Defaults to the default AWS-managed EBS key. | `string` | `"aws/ebs"` | no |
-| kali\_instance\_type | The EC2 instance size to use for the Kali server. | `string` | `"t2.medium"` | no |
+| kali\_instance\_type | The EC2 instance size to use for the Kali server. | `string` | `"t3.medium"` | no |
 | kali\_spot\_type | Whether to launch the Kali spot instance as a 'persistent' request or a 'one-time' request. | `string` | `"one-time"` | no |
 | kali\_volume\_size | The volume size for the Kali EC2 instance, GiB. | `number` | `25` | no |
 | metadata\_enabled | Whether EC2 instance medata is enabled. 'enabled' or 'disabled'. Use 'metadat\_tokens' to decide between v1 or v2 of instance metadata. | `string` | `"enabled"` | no |
@@ -34,3 +35,5 @@
 |------|-------------|
 | kali\_id | n/a |
 | kali\_ip | n/a |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

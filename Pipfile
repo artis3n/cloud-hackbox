@@ -5,8 +5,6 @@ verify_ssl = true
 
 [dev-packages]
 molecule = {extras = ["docker","lint"], version = "*"}
-docker = "*"
-ansible-lint = "*"
 pre-commit = "*"
 
 [packages]

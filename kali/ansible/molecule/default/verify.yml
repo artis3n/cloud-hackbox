@@ -5,17 +5,17 @@
 
   tasks:
   - name: Check rockyou wordlist
-    stat:
+    ansible.builtin.stat:
       path: /usr/share/wordlists/rockyou.txt
     register: rockyou
 
   - name: Check for vnc password
-    stat:
+    ansible.builtin.stat:
       path: /home/kali/.vnc/passwd
     register: vncpass
 
   - name: Assertions
-    assert:
+    ansible.builtin.assert:
       that:
         - rockyou.stat.exists
         - vncpass.stat.exists
