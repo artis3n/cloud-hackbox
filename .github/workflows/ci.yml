@@ -15,14 +15,6 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Use Cache
-        uses: actions/cache@v2.1.4
-        with:
-          path: ~/.local/share/virtualenvs
-          key: ${{ runner.os }}-pipenv-cache-${{ hashFiles('Pipfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pipenv-cache-
-
       - name: Install dependencies
         run: |
           pip install wheel pipenv
