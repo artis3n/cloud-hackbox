@@ -1,14 +1,14 @@
 ---
 
 - name: Firewall | Configure UFW
-  ufw:
+  community.general.ufw:
     rule: "{{ item.rule }}"
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
   loop: "{{ ufw_rules }}"
 
 - name: Firewall | Set UFW Defaults
-  ufw:
+  community.general.ufw:
     direction: "{{ item.direction }}"
     default: "{{ item.default }}"
   loop:
@@ -16,12 +16,12 @@
     - { direction: outgoing, default: allow }
 
 - name: Firewall | Enable UFW
-  ufw:
+  community.general.ufw:
     state: enabled
     logging: '{{ ufw_log_level }}'
 
 - name: Firewall | Configure UFW logrotate
-  template:
+  ansible.builtin.template:
     src: files/logs/ufw.j2
     dest: /etc/logrotate.d/ufw
     mode: '0644'

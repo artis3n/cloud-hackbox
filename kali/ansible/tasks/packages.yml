@@ -1,27 +1,27 @@
 ---
 
 - name: Packages | Use HTTPS
-  copy:
+  ansible.builtin.copy:
     src: files/apt/sources.list
     dest: /etc/apt/sources.list
     mode: '644'
 
 - name: Packages | Update
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     upgrade: 'yes'
 
 - name: Packages | Install - will take a long time
-  package:
+  ansible.builtin.package:
     name: "{{ apt_packages }}"
     state: present
 
 - name: Packages | Cleanup
-  apt:
+  ansible.builtin.apt:
     autoremove: yes
     autoclean: yes
 
 - name: Packages | Update Gems
-  shell: gem update --no-document && touch ~/.ansible-gems-updated
+  ansible.builtin.shell: gem update --no-document && touch ~/.ansible-gems-updated
   args:
     creates: ~/.ansible-gems-updated

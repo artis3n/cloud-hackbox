@@ -9,13 +9,13 @@
 
   tasks:
   - name: Install Ansible dependencies
-    apt:
+    ansible.builtin.apt:
       update_cache: yes
       name: "{{ prepare_apt_packages }}"
       state: present
 
   - name: Create kali user
-    user:
+    ansible.builtin.user:
       name: kali
       password: "{{ kali_user_pass | password_hash('sha512', 'ansiblesalt') }}"
       groups:

@@ -5,6 +5,14 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - Pipfile
+      - Pipfile.lock
+      - .github/**
+      - README.md
+      - Makefile
+      - LICENSE
+      - .gitignore
 
 jobs:
   packer:

@@ -14,7 +14,7 @@ repos:
       files: ^kali/ansible/variables.yml
 
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: 2.1.4
+  rev: 2.1.5
   hooks:
     - id: shellcheck
 
@@ -25,8 +25,9 @@ repos:
       files: \.(yaml|yml)$
 
 - repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.45.0
+  rev: v1.47.0
   hooks:
     - id: terraform_fmt
-    - id: terraform_docs_replace
-      args: ['--dest=README.md', '--sort-inputs-by-required', '--with-aggregate-type-defaults']
+    - id: terraform_docs
+      args:
+        - '--args=--sort-by-required'

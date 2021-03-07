@@ -1,7 +1,7 @@
 variable "kali_instance_type" {
   type        = string
   description = "The EC2 instance size to use for the Kali server."
-  default     = "t2.medium"
+  default     = "t3.medium"
 }
 
 variable "kali_volume_size" {
