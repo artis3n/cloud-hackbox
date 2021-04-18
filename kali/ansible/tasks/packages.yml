@@ -8,7 +8,7 @@
 
 - name: Packages | Update
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     upgrade: 'yes'
 
 - name: Packages | Install - will take a long time
@@ -18,10 +18,10 @@
 
 - name: Packages | Cleanup
   ansible.builtin.apt:
-    autoremove: yes
-    autoclean: yes
+    autoremove: true
+    autoclean: true
 
 - name: Packages | Update Gems
-  ansible.builtin.shell: gem update --no-document && touch ~/.ansible-gems-updated
-  args:
+  ansible.builtin.shell:
+    cmd: gem update --no-document && touch ~/.ansible-gems-updated
     creates: ~/.ansible-gems-updated

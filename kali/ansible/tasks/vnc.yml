@@ -14,7 +14,7 @@
     mode: '666'
 
 - name: VNC | Set VNC password
-  become: yes
+  become: true
   become_user: kali
   ansible.builtin.expect:
     command: vncpasswd
@@ -48,7 +48,7 @@
 
 - name: VNC | Reload systemd
   ansible.builtin.systemd:
-    daemon-reload: yes
+    daemon-reload: true
   when: vnc_systemd.changed  # noqa 503
   tags: notest
 
@@ -56,7 +56,7 @@
   ansible.builtin.service:
     state: stopped
     name: vncserver@1.service
-    enabled: yes
+    enabled: true
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
   tags:
     - molecule-notest
@@ -68,6 +68,6 @@
     line: 'alias {{ item.alias }}="{{ item.command }}"'
     state: present
   loop:
-    - { alias: vnc-start, command: 'sudo systemctl start vncserver@1.service' }
-    - { alias: vnc-stop, command: 'sudo systemctl stop vncserver@1.service' }
-    - { alias: vnc-status, command: 'sudo systemctl status vncserver@1.service' }
+    - {alias: vnc-start, command: 'sudo systemctl start vncserver@1.service'}
+    - {alias: vnc-stop, command: 'sudo systemctl stop vncserver@1.service'}
+    - {alias: vnc-status, command: 'sudo systemctl status vncserver@1.service'}

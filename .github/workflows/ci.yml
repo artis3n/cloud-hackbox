@@ -13,11 +13,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
-          pip install wheel pipenv
+          pip install -U pip setuptools wheel pipenv
           pipenv install --dev
 
       - name: Test
@@ -33,6 +33,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1.3.2
         with:
+          terraform_version: 0.15.0
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Init

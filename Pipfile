@@ -11,4 +11,4 @@ pre-commit = "*"
 ansible = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

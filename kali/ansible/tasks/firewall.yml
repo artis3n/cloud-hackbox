@@ -12,8 +12,8 @@
     direction: "{{ item.direction }}"
     default: "{{ item.default }}"
   loop:
-    - { direction: incoming, default: deny }
-    - { direction: outgoing, default: allow }
+    - {direction: incoming, default: deny}
+    - {direction: outgoing, default: allow}
 
 - name: Firewall | Enable UFW
   community.general.ufw:

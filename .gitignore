@@ -3,3 +3,5 @@ terraform.tfstate.d
 .terraform.lock.hcl
 .terraform
 kali/terraform/input.tfvars
+.idea
+.cache
