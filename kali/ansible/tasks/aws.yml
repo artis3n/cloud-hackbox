@@ -1,32 +1,21 @@
 ---
-- name: AWS | Download AWS CLI
-  ansible.builtin.get_url:
-    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-    dest: /tmp/awscliv2.zip
-    owner: kali
-    group: kali
-    mode: '660'
-  register: awscli_archive
-
 - name: AWS | Unarchive AWS CLI
   ansible.builtin.unarchive:
-    src: '{{ awscli_archive.dest }}'
-    remote_src: yes
+    src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    remote_src: true
     dest: /tmp
     mode: '660'
   register: new_awscli
 
 - name: AWS | Install AWS CLI
-  become: yes
-  ansible.builtin.command: sh ./aws/install
-  args:
+  ansible.builtin.command:
+    cmd: sh ./aws/install
     chdir: /tmp
     creates: /usr/local/bin/aws
 
 - name: AWS | Update AWS CLI
-  become: yes
-  ansible.builtin.command: sh ./aws/install --update
-  args:
+  ansible.builtin.command:
+    cmd: sh ./aws/install --update
     chdir: /tmp
   when: new_awscli.changed  # noqa 503
 
@@ -46,6 +35,6 @@
   ansible.builtin.systemd:
     name: amazon-ssm-agent
     state: started
-    enabled: yes
+    enabled: true
   # Don't bother with systemd in the Molecule Docker container. Just skip testing this task.
   tags: notest

@@ -1,25 +1,25 @@
 ---
 - name: Prepare
   hosts: all
-  become: yes
-  gather_facts: false
+  become: true
+  gather_facts: true
 
   vars_files:
     - ../../variables.yml
 
   tasks:
-  - name: Install Ansible dependencies
-    ansible.builtin.apt:
-      update_cache: yes
-      name: "{{ prepare_apt_packages }}"
-      state: present
+    - name: Install Ansible dependencies
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ prepare_apt_packages }}"
+        state: present
 
-  - name: Create kali user
-    ansible.builtin.user:
-      name: kali
-      password: "{{ kali_user_pass | password_hash('sha512', 'ansiblesalt') }}"
-      groups:
-        - sudo
-      create_home: yes
-      shell: /bin/bash
-      state: present
+    - name: Create kali user
+      ansible.builtin.user:
+        name: kali
+        password: "{{ kali_user_pass | password_hash('sha512', 'ansiblesalt') }}"
+        groups:
+          - sudo
+        create_home: true
+        shell: /bin/bash
+        state: present

@@ -1,0 +1,9 @@
+exclude_paths:
+    - .cache/
+    - .github/
+    - .idea/
+    - .vscode/
+    - .pre-commit-config.yaml
+
+skip_list:
+    - line-length

@@ -45,14 +45,14 @@ ufw_log_level: low
 # Use K, M, G for KB, MB, GB.
 ufw_log_maxsize: 300M
 ufw_rules:
-  - { rule: limit, port: ssh, proto: tcp }
-  - { rule: deny, port: 5901, proto: tcp }
-  - { rule: deny, port: 5432, proto: tcp }
-  - { rule: allow, port: http, proto: tcp }
-  - { rule: allow, port: https, proto: tcp }
-  - { rule: allow, port: 53, proto: tcp }
-  - { rule: allow, port: 53, proto: udp }
-  - { rule: allow, port: 4000:4999, proto: tcp }
+  - {rule: limit, port: ssh, proto: tcp}
+  - {rule: deny, port: 5901, proto: tcp}
+  - {rule: deny, port: 5432, proto: tcp}
+  - {rule: allow, port: http, proto: tcp}
+  - {rule: allow, port: https, proto: tcp}
+  - {rule: allow, port: 53, proto: tcp}
+  - {rule: allow, port: 53, proto: udp}
+  - {rule: allow, port: 4000:4999, proto: tcp}
 
 #############
 # Passwords #

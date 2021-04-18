@@ -1,8 +1,8 @@
 ---
 - name: Provision Kali
   hosts: all
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
 
   collections:
     - artis3n.github
