@@ -44,7 +44,7 @@ Then choose a hackbox and follow the instructions to build and provision it.
 
 ## Kali Linux AMI
 
-Packer file: `kali/kali-ami.json`
+Packer file: `kali/*.pkr.hcl`
 
 Builds a Kali Linux AMI with the following:
 
@@ -91,7 +91,7 @@ pipenv run packer build \
   -var aws_region="us-east-1" \
   -var instance_type="t3.medium" \
   -var kms_key_id_or_alias="alias/aws/ebs" \
-  kali/kali-ami.json
+  kali/
 ```
 
 Once you have an AMI created, you can have an AWS instance available anytime with 1 minute and 1 command:

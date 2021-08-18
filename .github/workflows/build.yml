@@ -33,7 +33,7 @@ jobs:
           make install
 
       - name: Packer build
-        run: pipenv run packer build kali/kali-ami.json
+        run: pipenv run packer build kali/
         env:
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
