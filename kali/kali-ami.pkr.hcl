@@ -5,7 +5,12 @@ locals {
 }
 
 source "amazon-ebs" "kali" {
+  // Use these or AWS_PROFILE if using IAM credentials
   access_key    = var.aws_access_key
+  secret_key = var.aws_secret_key
+  // Use this with aws-vault or some existing AWS session
+  token = var.aws_session_token
+
   ami_name      = local.ami_name
   instance_type = var.instance_type
 
@@ -18,7 +23,6 @@ source "amazon-ebs" "kali" {
   }
 
   region     = var.aws_region
-  secret_key = var.aws_secret_key
 
   source_ami_filter {
     filters = {
@@ -41,11 +45,29 @@ source "amazon-ebs" "kali" {
 build {
   sources = ["source.amazon-ebs.kali"]
 
+  hcp_packer_registry {
+    # Variables not allowed
+#    bucket_name = var.hcp_packer_bucket_name
+    bucket_name = "kali-hackbox-aws"
+    # Variables not allowed
+#    description = var.hcp_packer_description
+    description = "Kali Linux AMI with extra juice."
+    labels = {
+      # Variables and functions are not allowed
+#      "kali-version" = var.kali_distro_version,
+#      "region" = "{{ .BuildRegion }}"
+#      "base-ami" = "{{ .SourceAMI }}"
+#      "base-ami-name" = "{{ .SourceAMIName }}"
+#      "created" = timestamp()
+    }
+  }
+
   provisioner "shell" {
     inline = [
       "sleep 10",
-      "sudo apt-get update",
-      "sudo apt-get install -y python3 python3-apt python3-pip python3-wheel",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-apt python3-pip python3-setuptools python3-wheel",
+      "sudo python3 -m pip install -U pip"
     ]
   }
   provisioner "ansible" {

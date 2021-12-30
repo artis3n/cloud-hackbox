@@ -6,15 +6,19 @@
     dest: /etc/apt/sources.list
     mode: '644'
 
-- name: Packages | Update
+- name: Packages | Update & Upgrade
   ansible.builtin.apt:
     update_cache: true
     upgrade: 'yes'
+  async: 3600
+  poll: 30
 
-- name: Packages | Install - will take a long time
+- name: Packages | Install
   ansible.builtin.package:
     name: "{{ apt_packages }}"
     state: present
+  async: 3600
+  poll: 30
 
 - name: Packages | Cleanup
   ansible.builtin.apt:

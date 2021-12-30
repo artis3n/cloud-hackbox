@@ -3,5 +3,7 @@
 - name: System | Ensure Kali user is configured correctly
   ansible.builtin.user:
     name: kali
-    password: "{{ kali_user_pass | password_hash('sha512', 'thepasswordisinthevariablesfile') }}"
+    # Hash salt must be less than 16 chars
+    # salt too large (sha512_crypt requires <= 16 chars)
+    password: "{{ kali_user_pass | password_hash('sha512', 'passinvars') }}"
     state: present
