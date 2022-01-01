@@ -22,7 +22,7 @@ Additional desired hackboxes:
 ## Setup
 
 ```bash
-pip install pipenv
+pip3 install pipenv
 # Install Packer, Terraform and AWS CLI as per their documentation
 # Optionally,
 make install-base
@@ -38,13 +38,16 @@ pipenv install --dev
 export AWS_ACCESS_KEY_ID=...
 export AWS_SECRET_ACCESS_KEY=...
 # If you have default or ephemeral credentials saved in ~/.aws/credentials you can forego these env vars
+#
+# If you use aws-vault, then this packer build will automatically pick up the necessary env var
+aws-vault exec profile -- make build
 ```
 
 Then choose a hackbox and follow the instructions to build and provision it.
 
 ## Kali Linux AMI
 
-Packer file: `kali/kali-ami.json`
+Packer file: `kali/*.pkr.hcl`
 
 Builds a Kali Linux AMI with the following:
 
@@ -87,11 +90,11 @@ make build  # pipenv run packer build. Will take 30-50 minutes to finish AMI cre
 # If you want to customize the AMI creation:
 pipenv run packer build \
   -var ami_name="custom-ami-name" \
-  -var kali_distro_version="2020" \
+  -var kali_distro_version="2021.4" \
   -var aws_region="us-east-1" \
   -var instance_type="t3.medium" \
   -var kms_key_id_or_alias="alias/aws/ebs" \
-  kali/kali-ami.json
+  kali/
 ```
 
 Once you have an AMI created, you can have an AWS instance available anytime with 1 minute and 1 command:

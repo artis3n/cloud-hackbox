@@ -6,8 +6,13 @@ all: install validate build
 .PHONY: install
 install:
 	pipenv install --dev
-	pipenv run ansible-galaxy role install --force-with-deps --role-file kali/ansible/requirements.yml
-	pipenv run ansible-galaxy collection install --force-with-deps --requirements-file kali/ansible/requirements.yml
+	pipenv run ansible-galaxy install --role-file kali/ansible/requirements.yml
+
+.PHONY: update
+update:
+	pipenv update --dev
+	pipenv run pre-commit autoupdate
+	pipenv run ansible-galaxy install --role-file kali/ansible/requirements.yml
 
 .PHONY: install-base
 install-base: install-packer install-terraform install-aws
@@ -26,19 +31,18 @@ install-packer:
 
 .PHONY: validate
 validate:
-	pipenv run packer validate kali/kali-ami.json
+	pipenv run packer validate kali/
 
 .PHONY: build
 build:
-	AWS_PROFILE=$${AWS_PROFILE:-terraform} AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 pipenv run packer build kali/kali-ami.json
+	AWS_MAX_ATTEMPTS=90 AWS_POLL_DELAY_SECONDS=60 aws-vault exec --duration=2h terraform -- pipenv run packer build kali/
 
 .PHONY: molecule
 molecule:
 	cd kali/ansible && pipenv run molecule test
 
 .PHONY: lint
-lint: lint-ans lint-tf
-	pipenv run packer validate kali/kali-ami.json
+lint: lint-ans lint-tf validate
 
 .PHONY: lint-ans
 lint-ans:
@@ -55,7 +59,7 @@ plan:
 .PHONY: provision
 provision:
 	cd kali/terraform && terraform init && terraform validate && terraform apply | tee /tmp/cloud-hackbox-kali.log
-	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_id" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_ip" | awk 'FNR==2{ print substr($$3, 2, length($$3)-6) }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m to be available...\e[0m" && AWS_PROFILE=$${AWS_PROFILE:-terraform} aws --region $${AWS_REGION:us-east-1} ec2 wait instance-status-ok --instance-ids $$INSTANCE_ID && echo " \e[32mDone\e[0m"
+	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_id" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_ip" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m ($${INSTANCE_ID}) to be available...\e[0m" && aws-vault exec --region=$${AWS_REGION:us-east-1} terraform -- aws ec2 wait instance-status-ok --instance-ids $$INSTANCE_ID && printf " \e[32mDone\e[0m\n"
 
 .PHONY: destroy
 destroy:

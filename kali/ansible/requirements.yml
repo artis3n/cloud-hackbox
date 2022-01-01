@@ -1,5 +1,4 @@
 roles:
   - name: artis3n.docker
 collections:
-  - name: artis3n.github
   - name: community.general

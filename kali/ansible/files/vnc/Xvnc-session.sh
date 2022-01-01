@@ -1,7 +1,7 @@
 #! /bin/sh
 
-test x"$SHELL" = x"" && SHELL=/bin/bash
-test x"$1"     = x"" && set -- default
+test "$SHELL" = "" && SHELL=/bin/bash
+test "$1"     = "" && set -- default
 
 vncconfig -iconic &
 "$SHELL" -l <<EOF

@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 0.15.0"
+  required_version = "~> 1.1.2"
 
   required_providers {
     aws = {
@@ -7,11 +7,9 @@ terraform {
     }
   }
 
-  # Replace this as appropriate for your backend
-  backend "remote" {
-    hostname     = "app.terraform.io"
+  # Replace this as appropriate
+  cloud {
     organization = "Artis3nal"
-
     workspaces {
       name = "cloud-hackbox-kali"
     }

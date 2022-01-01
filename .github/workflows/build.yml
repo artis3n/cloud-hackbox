@@ -14,6 +14,10 @@ on:
       - LICENSE
       - .gitignore
 
+permissions:
+  id-token: write  # Required for OIDC authentication
+  contents: read  # Required for actions/checkout
+
 jobs:
   packer:
     runs-on: ubuntu-latest
@@ -26,16 +30,30 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::547309552818:role/OIDC_GitHub_Actions
+          role-session-name: github-actions-${{ github.sha }}
+          role-duration-seconds: 7200  # 2 hours
+
+      - name: Install Pre-reqs
         run: |
           make install-packer
-          pip install -U pip setuptools wheel pipenv
-          make install
+          python -m pip install -U pip
+          pip install pipenv
+
+      - name: Use Cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+
+      - name: Install dependencies
+        run: make install
 
       - name: Packer build
-        run: pipenv run packer build kali/kali-ami.json
+        run: pipenv run packer build kali/
         env:
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

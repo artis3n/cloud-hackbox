@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.1.0
     hooks:
       - id: check-json
       - id: end-of-file-fixer
@@ -19,15 +19,15 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v5.0.7
+    rev: v5.3.1
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.48.0
+    rev: v1.62.3
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
         args:
-          - '--args=--sort-by-required'
+          - '--args=--sort-by required'

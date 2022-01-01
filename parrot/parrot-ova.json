@@ -6,8 +6,8 @@
     "builders": [
         {
             "type": "vmware-iso",
-            "iso_url": "https://download.parrot.sh/parrot/iso/4.9.1/Parrot-security-4.9.1_x64.iso",
-            "iso_checksum": "f9c94e103ed26102b9d07cb00f3a74658215cffd7d53039231f5172318351fb2",
+            "iso_url": "https://download.parrot.sh/parrot/iso/4.11.3/Parrot-security-4.11.3_amd64.iso",
+            "iso_checksum": "ae30e4d2d7cdaffa7fce872dbfc4cc138fba39574a7e8ea34bddd4f171cde045",
             "iso_checksum_type": "sha256",
 
             "ssh_username": "ec2-user",
