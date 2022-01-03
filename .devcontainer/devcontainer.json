@@ -3,10 +3,10 @@
 {
 	"name": "Python 3",
 	"runArgs": ["--init"],
-	"hostRequirements": {
-		// Running the molecule container uses up all available disk space in /workspaces
-		"storage": "64gb",
-	},
+	// "hostRequirements": {
+	// 	// Running the molecule container uses up all available disk space in /workspaces
+	// 	"storage": "64gb",
+	// },
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": "..",
