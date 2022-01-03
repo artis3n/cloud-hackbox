@@ -24,8 +24,6 @@ RUN mkdir /home/vscode/.terraform.d/plugins \
     && curl -L "https://github.com/apparentlymart/terraform-credentials-env/releases/download/v1.0.0/terraform-credentials-env_1.0.0_linux_amd64.zip" -o "terraform-credentials-env.zip" \
     && unzip terraform-credentials-env.zip -d /home/vscode/.terraform.d/plugins
 
-COPY .devcontainer/files/.terraformrc /home/vscode/
-
 # Install AWS CLI
 RUN cd /tmp \
     && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
