@@ -7,7 +7,7 @@ all: install lint build
 install:
 	pipenv install --dev
 	pipenv run ansible-galaxy install --role-file kali/ansible/requirements.yml
-	pipenv run pre-commit install
+	pipenv run pre-commit install --install-hooks
 	cd kali/terraform && terraform init
 
 .PHONY: update
