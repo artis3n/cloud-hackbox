@@ -20,19 +20,14 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install pipenv
 
 # Install Terraform credentials helper
 RUN mkdir -p /home/vscode/.terraform.d/plugins \
-    && cd /tmp \
-    && curl -L "https://github.com/apparentlymart/terraform-credentials-env/releases/download/v1.0.0/terraform-credentials-env_1.0.0_linux_amd64.zip" -o "terraform-credentials-env.zip" \
-    && unzip terraform-credentials-env.zip -d /home/vscode/.terraform.d/plugins
-
+    && curl -L "https://github.com/apparentlymart/terraform-credentials-env/releases/download/v1.0.0/terraform-credentials-env_1.0.0_linux_amd64.zip" -o "/tmp/terraform-credentials-env.zip" \
+    && unzip /tmp/terraform-credentials-env.zip -d /home/vscode/.terraform.d/plugins
 COPY .devcontainer/files/.terraformrc /home/vscode/
 
 # Install AWS CLI
-RUN cd /tmp \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && sudo ./aws/install \
-    && rm -rf ./aws/ awscliv2.zip \
-    && cd -
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" \
+    && unzip /tmp/awscliv2.zip -d /tmp/ \
+    && sudo /tmp/aws/install
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
