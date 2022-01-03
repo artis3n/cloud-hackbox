@@ -51,7 +51,7 @@ jobs:
           key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
 
       - name: Install dependencies
-        run: make install
+        run: make install-ci
 
       - name: Packer build
         run: pipenv run packer build kali/
