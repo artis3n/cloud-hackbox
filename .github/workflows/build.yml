@@ -21,6 +21,7 @@ permissions:
 jobs:
   packer:
     runs-on: ubuntu-latest
+    environment: deploy
 
     steps:
       - uses: actions/checkout@v2.3.4
@@ -57,3 +58,5 @@ jobs:
         env:
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
+          HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
+          HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}

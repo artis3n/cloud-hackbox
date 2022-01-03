@@ -1,12 +1,14 @@
 #!/usr/bin/env make
 
 PHONY: all
-all: install validate build
+all: install lint build
 
 .PHONY: install
 install:
 	pipenv install --dev
 	pipenv run ansible-galaxy install --role-file kali/ansible/requirements.yml
+	pipenv run pre-commit install --install-hooks
+	cd kali/terraform && terraform init
 
 .PHONY: update
 update:
