@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2.3.4
-      
+      - uses: actions/checkout@v2.4.0
+
       - name: Install pipenv
         run: pipx install pipenv
 
@@ -35,7 +35,7 @@ jobs:
       contents: read  # Required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.4.0
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
