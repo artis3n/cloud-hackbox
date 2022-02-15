@@ -26,14 +26,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2.4.0
 
-      - name: Install pipenv
-        run: pipx install pipenv
+      - name: Install dependency manager
+        run: pipx install poetry
 
       - name: Set up Python
         uses: actions/setup-python@v2.3.2
         with:
-          python-version: '3.9'
-          cache: 'pipenv'
+          python-version: '3.10'
+#          cache: 'poetry'
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -46,7 +46,7 @@ jobs:
         run: make install-ci
 
       - name: Packer build
-        run: pipenv run packer build kali/
+        run: poetry run packer build kali/
         env:
           AWS_MAX_ATTEMPTS: 90
           AWS_POLL_DELAY_SECONDS: 60
