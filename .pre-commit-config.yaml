@@ -13,7 +13,7 @@ repos:
         files: ^kali/ansible/variables.yml
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.1.5
+    rev: 2.1.6
     hooks:
       - id: shellcheck
 

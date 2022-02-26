@@ -45,23 +45,6 @@ source "amazon-ebs" "kali" {
 build {
   sources = ["source.amazon-ebs.kali"]
 
-  hcp_packer_registry {
-    # Variables not allowed
-#    bucket_name = var.hcp_packer_bucket_name
-    bucket_name = "kali-hackbox-aws"
-    # Variables not allowed
-#    description = var.hcp_packer_description
-    description = "Kali Linux AMI with extra juice."
-    labels = {
-      # Variables and functions are not allowed
-#      "kali-version" = var.kali_distro_version,
-#      "region" = "{{ .BuildRegion }}"
-#      "base-ami" = "{{ .SourceAMI }}"
-#      "base-ami-name" = "{{ .SourceAMIName }}"
-#      "created" = timestamp()
-    }
-  }
-
   provisioner "shell" {
     inline = [
       "sleep 10",

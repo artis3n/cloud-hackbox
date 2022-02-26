@@ -44,7 +44,7 @@ build:
 
 .PHONY: molecule
 molecule:
-	cd kali/ansible && poetry run molecule test
+	cd kali/ansible && poetry run molecule test --parallel
 
 .PHONY: lint
 lint: lint-ans lint-tf validate

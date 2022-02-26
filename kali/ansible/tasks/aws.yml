@@ -21,7 +21,7 @@
 
 - name: AWS | Download SSM agent
   ansible.builtin.get_url:
-    url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+    url: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_{{ architecture }}/amazon-ssm-agent.deb
     dest: /tmp/amazon-ssm-agent.deb
     owner: kali
     group: kali
