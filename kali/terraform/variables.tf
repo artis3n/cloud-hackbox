@@ -19,6 +19,7 @@ variable "ssh_port" {
 variable "kali_pubkey" {
   type        = string
   description = "The public key to a private key under your control. You will SSH onto the server using this keypair."
+  default     = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7f8bbM9qGo5bFnofB8n7YiVC94uvoJe2En+m1Hvu8y dev@artis3nal.com"
 }
 
 variable "kali_spot_type" {

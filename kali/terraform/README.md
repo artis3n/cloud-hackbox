@@ -4,12 +4,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1.2 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.70.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.2.0 |
 
 ## Modules
 
@@ -32,9 +33,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_kali_pubkey"></a> [kali\_pubkey](#input\_kali\_pubkey) | The public key to a private key under your control. You will SSH onto the server using this keypair. | `string` | n/a | yes |
 | <a name="input_ebs_kms_key"></a> [ebs\_kms\_key](#input\_ebs\_kms\_key) | KMS key alias to use for KMS key data source. Defaults to the default AWS-managed EBS key. | `string` | `"aws/ebs"` | no |
 | <a name="input_kali_instance_type"></a> [kali\_instance\_type](#input\_kali\_instance\_type) | The EC2 instance size to use for the Kali server. | `string` | `"t3.medium"` | no |
+| <a name="input_kali_pubkey"></a> [kali\_pubkey](#input\_kali\_pubkey) | The public key to a private key under your control. You will SSH onto the server using this keypair. | `string` | `"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7f8bbM9qGo5bFnofB8n7YiVC94uvoJe2En+m1Hvu8y dev@artis3nal.com"` | no |
 | <a name="input_kali_spot_type"></a> [kali\_spot\_type](#input\_kali\_spot\_type) | Whether to launch the Kali spot instance as a 'persistent' request or a 'one-time' request. | `string` | `"one-time"` | no |
 | <a name="input_kali_volume_size"></a> [kali\_volume\_size](#input\_kali\_volume\_size) | The volume size for the Kali EC2 instance, GiB. | `number` | `25` | no |
 | <a name="input_metadata_enabled"></a> [metadata\_enabled](#input\_metadata\_enabled) | Whether EC2 instance medata is enabled. 'enabled' or 'disabled'. Use 'metadat\_tokens' to decide between v1 or v2 of instance metadata. | `string` | `"enabled"` | no |

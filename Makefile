@@ -60,11 +60,11 @@ lint-tf:
 
 .PHONY: plan
 plan:
-	cd kali/terraform && terraform init && terraform plan
+	cd kali/terraform && terraform init && aws-vault exec --region=$${AWS_REGION:us-east-1}} terraform -- terraform plan
 
 .PHONY: provision
 provision:
-	cd kali/terraform && terraform init && terraform validate && terraform apply | tee /tmp/cloud-hackbox-kali.log
+	cd kali/terraform && terraform init && terraform validate && aws-vault exec --region=$${AWS_REGION:us-east-1}} terraform -- terraform apply | tee /tmp/cloud-hackbox-kali.log
 	INSTANCE_ID=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_id" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && INSTANCE_IP=$$(cat /tmp/cloud-hackbox-kali.log | grep "kali_ip" | awk 'FNR==2{ print substr($$3, 2, length($$3)-2) }') && printf "\e[34mWaiting for AWS instance \e[32m$${INSTANCE_IP}\e[34m ($${INSTANCE_ID}) to be available...\e[0m" && aws-vault exec --region=$${AWS_REGION:us-east-1} terraform -- aws ec2 wait instance-status-ok --instance-ids $$INSTANCE_ID && printf " \e[32mDone\e[0m\n"
 
 .PHONY: destroy
