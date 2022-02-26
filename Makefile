@@ -18,6 +18,7 @@ update:
 	poetry update
 	poetry run pre-commit autoupdate
 	poetry run ansible-galaxy install --role-file kali/ansible/requirements.yml
+	cd kali/terraform && terraform init -upgrade
 
 .PHONY: install-base
 install-base: install-packer install-terraform install-aws
