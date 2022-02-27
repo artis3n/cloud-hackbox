@@ -1,6 +1,6 @@
 variable "kali_distro_version" {
   type    = number
-  default = 2021.4
+  default = 2022.1
 }
 
 #variable "hcp_packer_bucket_name" {

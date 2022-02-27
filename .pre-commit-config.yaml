@@ -13,18 +13,18 @@ repos:
         files: ^kali/ansible/variables.yml
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.1.5
+    rev: 2.1.6
     hooks:
       - id: shellcheck
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v5.3.1
+    rev: v5.4.0
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.62.3
+    rev: 48bc03ca3f0f2f782d2f430069868019a6892062
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
