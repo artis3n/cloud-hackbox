@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
 
       - name: Install dependency manager
         run: pipx install poetry
@@ -35,7 +35,7 @@ jobs:
       contents: read  # Required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
 
       - uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
