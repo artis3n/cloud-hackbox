@@ -22,7 +22,7 @@ PyYAML = "*"
 subprocess-tee = ">=0.3.5"
 
 [package.extras]
-test = ["coverage", "flaky", "pip-tools", "pytest", "pytest-markdown", "pytest-mock", "pytest-plus"]
+test = ["pytest-plus", "pytest-mock", "pytest-markdown", "pytest", "pip-tools", "flaky", "coverage"]
 
 [[package]]
 name = "ansible-core"
@@ -204,7 +204,7 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
+test = ["hypothesis (==3.55.3)", "flake8 (==3.7.8)"]
 
 [[package]]
 name = "cookiecutter"
@@ -401,12 +401,12 @@ ansible-compat = ">=0.5.0"
 docker = ">=4.3.1"
 molecule = ">=3.4.0"
 requests = "*"
-selinux = {version = "*", markers = "sys_platform == \"linux\" or sys_platform == \"linux2\""}
+selinux = {version = "*", markers = "sys_platform == \"linux2\" or sys_platform == \"linux\""}
 
 [package.extras]
-docs = ["simplejson", "sphinx", "sphinx-ansible-theme (>=0.2.2)"]
-lint = ["pre-commit (>=1.21.0)"]
 test = ["molecule"]
+lint = ["pre-commit (>=1.21.0)"]
+docs = ["sphinx-ansible-theme (>=0.2.2)", "sphinx", "simplejson"]
 
 [[package]]
 name = "nodeenv"
@@ -481,8 +481,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
-testing = ["pytest", "pytest-benchmark"]
+testing = ["pytest-benchmark", "pytest"]
+dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "poyo"
@@ -494,11 +494,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pre-commit"
-version = "2.17.0"
+version = "2.20.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
-python-versions = ">=3.6.1"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cfgv = ">=2.0.0"
@@ -618,10 +618,10 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-examples = ["html5lib", "packaging", "pygraphviz", "requests"]
-lint = ["black", "flake8"]
-release = ["setl", "towncrier"]
-test = ["commentjson", "packaging", "pytest"]
+test = ["pytest", "packaging", "commentjson"]
+release = ["towncrier", "setl"]
+lint = ["flake8", "black"]
+examples = ["requests", "pygraphviz", "packaging", "html5lib"]
 
 [[package]]
 name = "rich"
@@ -690,7 +690,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-test = ["enrich (>=1.2.6)", "mock (>=4.0.3)", "molecule (>=3.4.0)", "pytest-cov (>=2.12.1)", "pytest-plus (>=0.2)", "pytest-xdist (>=2.3.0)", "pytest (>=6.2.5)"]
+test = ["pytest (>=6.2.5)", "pytest-xdist (>=2.3.0)", "pytest-plus (>=0.2)", "pytest-cov (>=2.12.1)", "molecule (>=3.4.0)", "mock (>=4.0.3)", "enrich (>=1.2.6)"]
 
 [[package]]
 name = "tenacity"
@@ -770,14 +770,14 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-docs = ["Sphinx (>=3.4)", "sphinx-rtd-theme (>=0.5)"]
-optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
+optional = ["wsaccel", "python-socks"]
+docs = ["sphinx-rtd-theme (>=0.5)", "Sphinx (>=3.4)"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "6f098a6620307b0208ca6abb575d77e68d92763e10f7f5b0b09b68b90a155d02"
+content-hash = "83af32b62166beccbedd1dbe1665ae2304267781ce93ffbc3529724f7954361b"
 
 [metadata.files]
 ansible = [
@@ -1046,8 +1046,8 @@ poyo = [
     {file = "poyo-0.5.0.tar.gz", hash = "sha256:e26956aa780c45f011ca9886f044590e2d8fd8b61db7b1c1cf4e0869f48ed4dd"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.17.0-py2.py3-none-any.whl", hash = "sha256:725fa7459782d7bec5ead072810e47351de01709be838c2ce1726b9591dad616"},
-    {file = "pre_commit-2.17.0.tar.gz", hash = "sha256:c1a8040ff15ad3d648c70cc3e55b93e4d2d5b687320955505587fd79bbaed06a"},
+    {file = "pre_commit-2.20.0-py2.py3-none-any.whl", hash = "sha256:51a5ba7c480ae8072ecdb6933df22d2f812dc897d5fe848778116129a681aac7"},
+    {file = "pre_commit-2.20.0.tar.gz", hash = "sha256:a978dac7bc9ec0bcee55c18a277d553b0f419d259dadb4b9418ff2d00eb43959"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
