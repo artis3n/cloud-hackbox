@@ -35,7 +35,7 @@ jobs:
           python-version: '3.10'
 #          cache: 'poetry'
 
-      - uses: aws-actions/configure-aws-credentials@v1.6.1
+      - uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::547309552818:role/OIDC_GitHub_Actions
